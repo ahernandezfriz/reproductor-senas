@@ -4,7 +4,7 @@ Tags:              video, accesibilidad, lengua de señas, LSC, shortcode
 Requires at least: 5.6
 Tested up to:      6.7
 Requires PHP:      7.4
-Stable tag:        1.0.0
+Stable tag:        1.0.7
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,9 +20,12 @@ El usuario puede activar o desactivar el recuadro de señas, y moverlo a cualqui
 * Recuadro de señas arrastrable (mouse y touch)
 * Re-sincronización automática si hay desfase
 * Múltiples reproductores por página sin conflictos
+* Funciona dentro de modales y popups dinámicos (Elementor/Bootstrap)
+* Controles protegidos contra interferencias de eventos en popups
+* Ventana de señas activada por defecto
 * Compatible con móviles y tablets
 * Sin dependencias externas (vanilla JS)
-* CSS y JS se cargan solo en páginas que usen el shortcode
+* Inicialización automática en contenido inyectado dinámicamente
 
 == Instalación ==
 
@@ -58,10 +61,35 @@ El usuario puede activar o desactivar el recuadro de señas, y moverlo a cualqui
 
 == Changelog ==
 
+= 1.0.7 =
+* Mejora robusta de inicialización en modales y popups dinámicos.
+* Corrección de controles que no respondían dentro de ventanas modales.
+* Ventana de señas activada por defecto al cargar el reproductor.
+* Ajustes de accesibilidad/estado inicial del botón de señas (ARIA).
+
+= 1.0.6 =
+* Se corrige la inicialización en contenido clonado por popups (se elimina dependencia de atributo HTML para estado de init).
+
+= 1.0.5 =
+* Se agregan `preventDefault` y `stopPropagation` en controles para evitar conflictos con scripts de modal.
+
+= 1.0.4 =
+* Se define `type="button"` en los controles para evitar comportamiento `submit` en formularios/modales.
+
+= 1.0.3 =
+* Se agrega fallback de inicialización al primer contacto del usuario.
+
+= 1.0.2 =
+* Integración con hooks/eventos de Elementor frontend para popups.
+* Carga de assets reforzada en frontend para escenarios de popup.
+
+= 1.0.1 =
+* Inicialización para contenido dinámico mediante observación del DOM.
+
 = 1.0.0 =
 * Versión inicial
 
 == Upgrade Notice ==
 
-= 1.0.0 =
-Primera versión estable.
+= 1.0.7 =
+Actualización recomendada: corrige interacción de controles en modales/popups y activa señas por defecto.
