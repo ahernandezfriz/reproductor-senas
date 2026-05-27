@@ -1,0 +1,253 @@
+/* Reproductor de Video con Lengua de Señas - v1.0.0 */
+
+.vsp-wrapper {
+    margin: 0 auto 2rem;
+    font-family: inherit;
+}
+
+.vsp-error {
+    color: #c00;
+    padding: .5rem;
+    border-left: 3px solid #c00;
+}
+
+.vsp-titulo {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* ---- Stage ---- */
+.vsp-stage {
+    position: relative;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+}
+
+.vsp-main {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+/* ---- Recuadro de señas ---- */
+.vsp-signs-wrap {
+    position: absolute;
+    bottom: 80px;
+    right: 16px;
+    width: 200px;
+    height: 130px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2.5px solid rgba(255,255,255,.7);
+    box-shadow: 0 4px 16px rgba(0,0,0,.5);
+    display: none;
+    cursor: move;
+    user-select: none;
+    z-index: 10;
+}
+
+.vsp-signs {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.vsp-signs-badge {
+    position: absolute;
+    top: 4px;
+    left: 6px;
+    background: rgba(0,0,0,.55);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 11px;
+    color: #fff;
+    pointer-events: none;
+}
+
+.vsp-drag-handle {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    color: rgba(255,255,255,.75);
+    font-size: 16px;
+    cursor: move;
+    line-height: 1;
+}
+
+/* ---- Overlay play central ---- */
+.vsp-overlay-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.vsp-big-play {
+    width: 64px;
+    height: 64px;
+    background: rgba(255,255,255,.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s;
+}
+
+.vsp-overlay-play:hover .vsp-big-play {
+    background: rgba(255,255,255,.25);
+}
+
+/* ---- Barra de controles ---- */
+.vsp-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 14px 12px;
+    background: linear-gradient(transparent, rgba(0,0,0,.78));
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 6;
+}
+
+/* Fila de progreso */
+.vsp-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.vsp-time-cur,
+.vsp-time-dur {
+    font-size: 12px;
+    color: #fff;
+    min-width: 36px;
+    font-variant-numeric: tabular-nums;
+}
+
+.vsp-time-dur { text-align: right; }
+
+.vsp-progress-bg {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,.25);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.vsp-progress-bg:hover { height: 6px; }
+
+.vsp-progress-fill {
+    height: 100%;
+    background: #fff;
+    border-radius: 2px;
+    width: 0%;
+    pointer-events: none;
+    transition: width .1s linear;
+}
+
+/* Fila de botones */
+.vsp-btn-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vsp-spacer { flex: 1; }
+
+/* Botones genéricos */
+.vsp-btn-play,
+.vsp-btn-mute,
+.vsp-btn-fs {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    opacity: .9;
+    transition: opacity .15s;
+}
+
+.vsp-btn-play:hover,
+.vsp-btn-mute:hover,
+.vsp-btn-fs:hover { opacity: 1; }
+
+/* Estado play/pause */
+.vsp-icon-pause,
+.vsp-icon-muted,
+.vsp-icon-compress { display: none; }
+
+.vsp-wrapper.is-playing .vsp-icon-play  { display: none; }
+.vsp-wrapper.is-playing .vsp-icon-pause { display: block; }
+.vsp-wrapper.is-playing .vsp-overlay-play { display: none; }
+
+.vsp-wrapper.is-muted .vsp-icon-vol    { display: none; }
+.vsp-wrapper.is-muted .vsp-icon-muted  { display: block; }
+
+.vsp-wrapper.is-fullscreen .vsp-icon-expand   { display: none; }
+.vsp-wrapper.is-fullscreen .vsp-icon-compress { display: block; }
+
+/* Volumen */
+.vsp-vol-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.vsp-vol {
+    width: 70px;
+    accent-color: #fff;
+    cursor: pointer;
+}
+
+/* Botón de señas */
+.vsp-btn-signs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,.12);
+    border: 1.5px solid rgba(255,255,255,.3);
+    border-radius: 20px;
+    padding: 5px 12px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 13px;
+    transition: background .2s, border-color .2s;
+}
+
+.vsp-btn-signs:hover {
+    background: rgba(255,255,255,.2);
+}
+
+.vsp-btn-signs[aria-pressed="true"] {
+    background: rgba(255,255,255,.28);
+    border-color: rgba(255,255,255,.7);
+}
+
+.vsp-signs-emoji { font-size: 15px; }
+
+/* ---- Responsivo ---- */
+@media (max-width: 480px) {
+    .vsp-signs-wrap {
+        width: 130px;
+        height: 85px;
+        bottom: 70px;
+        right: 8px;
+    }
+
+    .vsp-signs-label { display: none; }
+
+    .vsp-vol { width: 50px; }
+}
