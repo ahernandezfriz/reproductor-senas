@@ -1,0 +1,606 @@
+/* Reproductor de Video con Lengua de Señas - v1.0.15 */
+
+.vsp-wrapper {
+    margin: 0 auto 2rem;
+    font-family: inherit;
+}
+
+.vsp-error {
+    color: #c00;
+    padding: .5rem;
+    border-left: 3px solid #c00;
+}
+
+.vsp-titulo {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* ---- Stage ---- */
+.vsp-stage {
+    position: relative;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    cursor: pointer;
+}
+
+/* ---- Carga coordinada de recursos ---- */
+.vsp-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: rgba(0, 0, 0, .82);
+    color: #fff;
+    text-align: center;
+    padding: 16px;
+}
+
+.vsp-wrapper.is-ready .vsp-loading,
+.vsp-wrapper.is-load-error .vsp-loading {
+    display: none;
+}
+
+.vsp-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, .25);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: vsp-spin .8s linear infinite;
+}
+
+@keyframes vsp-spin {
+    to { transform: rotate(360deg); }
+}
+
+.vsp-loading-text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    max-width: 280px;
+}
+
+.vsp-load-error {
+    position: absolute;
+    inset: 0;
+    z-index: 35;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, .9);
+    color: #fff;
+    text-align: center;
+}
+
+.vsp-load-error[hidden] {
+    display: none !important;
+}
+
+.vsp-load-error-text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #ffb4b4;
+}
+
+.vsp-asset-warn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 25;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: rgba(180, 120, 0, .92);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.35;
+    text-align: center;
+}
+
+.vsp-asset-warn[hidden] {
+    display: none !important;
+}
+
+.vsp-wrapper.is-loading .vsp-overlay-play,
+.vsp-wrapper.is-loading .vsp-controls {
+    pointer-events: none;
+    opacity: .45;
+}
+
+.vsp-wrapper.is-load-error .vsp-overlay-play,
+.vsp-wrapper.is-load-error .vsp-controls {
+    pointer-events: none;
+    opacity: .35;
+}
+
+.vsp-wrapper.is-signs-error .vsp-btn-signs {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.vsp-wrapper.is-playing .vsp-stage {
+    cursor: pointer;
+}
+
+.vsp-main {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+.vsp-main-host {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.vsp-vimeo-embed {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #000;
+}
+
+.vsp-signs-vimeo {
+    position: absolute;
+    inset: 0;
+}
+
+.vsp-wrapper.is-vimeo-main .vsp-overlay-play,
+.vsp-wrapper.is-vimeo-main .vsp-subtitles,
+.vsp-wrapper.is-vimeo-main .vsp-controls,
+.vsp-wrapper.is-vimeo-main .vsp-signs-wrap,
+.vsp-wrapper.is-vimeo-main .vsp-loading,
+.vsp-wrapper.is-vimeo-main .vsp-load-error,
+.vsp-wrapper.is-vimeo-main .vsp-asset-warn {
+    z-index: 5;
+}
+
+.vsp-wrapper.is-vimeo-main .vsp-loading,
+.vsp-wrapper.is-vimeo-main .vsp-load-error {
+    z-index: 30;
+}
+
+/* ---- Recuadro de señas ---- */
+.vsp-signs-wrap {
+    position: absolute;
+    bottom: 80px;
+    right: 16px;
+    width: 200px;
+    height: 130px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2.5px solid rgba(255,255,255,.7);
+    box-shadow: 0 4px 16px rgba(0,0,0,.5);
+    display: none;
+    cursor: grab;
+    user-select: none;
+    z-index: 10;
+    touch-action: none;
+}
+
+.vsp-signs-wrap.is-dragging {
+    cursor: grabbing;
+}
+
+.vsp-signs-dragbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 8px;
+    background: rgba(0, 0, 0, .72);
+    color: #fff;
+    cursor: grab;
+    border-bottom: 1px solid rgba(255, 255, 255, .2);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity .2s ease, transform .2s ease;
+    pointer-events: none;
+}
+
+.vsp-signs-wrap:hover .vsp-signs-dragbar,
+.vsp-signs-wrap.is-dragging .vsp-signs-dragbar {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.vsp-signs-wrap.is-dragging .vsp-signs-dragbar {
+    cursor: grabbing;
+}
+
+.vsp-signs-dragbar-grip {
+    width: 12px;
+    height: 14px;
+    flex-shrink: 0;
+    background-image:
+        radial-gradient(circle, #fff 1.5px, transparent 1.6px),
+        radial-gradient(circle, #fff 1.5px, transparent 1.6px),
+        radial-gradient(circle, #fff 1.5px, transparent 1.6px);
+    background-size: 6px 6px;
+    background-position: 0 0, 6px 0, 3px 6px;
+    background-repeat: no-repeat;
+    opacity: .9;
+}
+
+.vsp-signs-dragbar-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.vsp-signs {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+}
+
+/* ---- Overlay play central ---- */
+.vsp-overlay-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.vsp-big-play {
+    width: 64px;
+    height: 64px;
+    background: rgba(255,255,255,.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s;
+}
+
+.vsp-overlay-play:hover .vsp-big-play {
+    background: rgba(255,255,255,.25);
+}
+
+/* ---- Subtítulos (sobre la barra de controles) ---- */
+.vsp-subtitles {
+    position: absolute;
+    left: 50%;
+    bottom: 72px;
+    transform: translateX(-50%);
+    z-index: 7;
+    max-width: calc(100% - 28px);
+    width: max-content;
+    padding: 8px 14px;
+    background: #000;
+    color: #fff;
+    border-radius: 6px;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .2s ease, visibility .2s ease;
+}
+
+.vsp-subtitles.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.vsp-subtitles-text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.45;
+    font-weight: 500;
+    white-space: pre-line;
+}
+
+/* ---- Barra de controles ---- */
+.vsp-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 14px 12px;
+    background: linear-gradient(transparent, rgba(0,0,0,.78));
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 6;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity .25s ease, transform .25s ease;
+    pointer-events: auto;
+}
+
+/* Ocultar controles al reproducir (clase aplicada por JS) */
+.vsp-wrapper .vsp-controls.vsp-controls--hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(12px) !important;
+    pointer-events: none !important;
+}
+
+.vsp-wrapper.is-controls-visible .vsp-controls.vsp-controls--hidden,
+.vsp-wrapper.is-playing:hover .vsp-controls.vsp-controls--hidden {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+}
+
+/* Fila de progreso */
+.vsp-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.vsp-time-cur,
+.vsp-time-dur {
+    font-size: 12px;
+    color: #fff;
+    min-width: 36px;
+    font-variant-numeric: tabular-nums;
+}
+
+.vsp-time-dur { text-align: right; }
+
+.vsp-progress-bg {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,.25);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.vsp-progress-bg:hover { height: 6px; }
+
+.vsp-progress-fill {
+    height: 100%;
+    background: #fff;
+    border-radius: 2px;
+    width: 0%;
+    pointer-events: none;
+    transition: width .1s linear;
+}
+
+/* Fila de botones */
+.vsp-btn-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.vsp-spacer { flex: 1; }
+
+/* Botones genéricos */
+.vsp-btn-play,
+.vsp-btn-mute,
+.vsp-btn-fs {
+    -webkit-appearance: none;
+    appearance: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    opacity: .9;
+    transition: opacity .15s;
+}
+
+.vsp-btn-play:hover,
+.vsp-btn-mute:hover,
+.vsp-btn-fs:hover { opacity: 1; }
+
+/* Estado play/pause */
+.vsp-icon-pause,
+.vsp-icon-muted,
+.vsp-icon-compress { display: none; }
+
+.vsp-wrapper.is-playing .vsp-icon-play  { display: none; }
+.vsp-wrapper.is-playing .vsp-icon-pause { display: block; }
+.vsp-wrapper.is-playing .vsp-overlay-play { display: none; }
+
+.vsp-wrapper.is-muted .vsp-icon-vol    { display: none; }
+.vsp-wrapper.is-muted .vsp-icon-muted  { display: block; }
+
+.vsp-wrapper.is-fullscreen .vsp-icon-expand   { display: none; }
+.vsp-wrapper.is-fullscreen .vsp-icon-compress { display: block; }
+
+/* Volumen */
+.vsp-vol-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.vsp-vol {
+    width: 52px;
+    accent-color: #fff;
+    cursor: pointer;
+}
+
+/* Botón de subtítulos */
+.vsp-btn-subtitles {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255,255,255,.12);
+    border: 1.5px solid rgba(255,255,255,.3);
+    border-radius: 18px;
+    padding: 5px 11px;
+    cursor: pointer;
+    color: #fff !important;
+    font-size: 12px;
+    transition: background .2s, border-color .2s;
+    line-height: 1.2;
+}
+
+.vsp-btn-subtitles:hover,
+.vsp-btn-subtitles:focus,
+.vsp-btn-subtitles:active,
+.vsp-btn-subtitles:focus-visible {
+    background: rgba(255,255,255,.2);
+    color: #fff !important;
+}
+
+.vsp-btn-subtitles[aria-pressed="true"] {
+    background: rgba(255,255,255,.28);
+    border-color: rgba(255,255,255,.7);
+}
+
+.vsp-wrapper .vsp-btn-subtitles {
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    padding: 5px 11px !important;
+    border-radius: 18px !important;
+    min-height: 30px !important;
+}
+
+/* Botón de señas */
+.vsp-btn-signs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255,255,255,.12);
+    border: 1.5px solid rgba(255,255,255,.3);
+    border-radius: 16px;
+    padding: 4px 9px;
+    cursor: pointer;
+    color: #fff !important;
+    font-size: 10px;
+    transition: background .2s, border-color .2s;
+    line-height: 1.1;
+}
+
+.vsp-btn-signs:hover {
+    background: rgba(255,255,255,.2);
+    color: #fff !important;
+}
+
+.vsp-btn-signs:focus,
+.vsp-btn-signs:active,
+.vsp-btn-signs:focus-visible {
+    color: #fff !important;
+}
+
+.vsp-btn-signs[aria-pressed="true"] {
+    background: rgba(255,255,255,.28);
+    border-color: rgba(255,255,255,.7);
+    color: #fff !important;
+}
+
+.vsp-btn-play svg,
+.vsp-btn-mute svg,
+.vsp-btn-fs svg {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    fill: currentColor !important;
+    color: #fff !important;
+    pointer-events: none !important;
+    overflow: visible !important;
+}
+
+/* Estado base y visibilidad por estado */
+.vsp-wrapper .vsp-btn-play .vsp-icon-play,
+.vsp-wrapper .vsp-btn-play .vsp-icon-pause,
+.vsp-wrapper .vsp-btn-mute .vsp-icon-vol,
+.vsp-wrapper .vsp-btn-mute .vsp-icon-muted,
+.vsp-wrapper .vsp-btn-fs .vsp-icon-expand,
+.vsp-wrapper .vsp-btn-fs .vsp-icon-compress {
+    display: none !important;
+}
+
+.vsp-wrapper .vsp-btn-play .vsp-icon-play,
+.vsp-wrapper .vsp-btn-mute .vsp-icon-vol,
+.vsp-wrapper .vsp-btn-fs .vsp-icon-expand {
+    display: block !important;
+}
+
+.vsp-wrapper.is-playing .vsp-btn-play .vsp-icon-play { display: none !important; }
+.vsp-wrapper.is-playing .vsp-btn-play .vsp-icon-pause { display: block !important; }
+
+.vsp-wrapper.is-muted .vsp-btn-mute .vsp-icon-vol { display: none !important; }
+.vsp-wrapper.is-muted .vsp-btn-mute .vsp-icon-muted { display: block !important; }
+
+.vsp-wrapper.is-fullscreen .vsp-btn-fs .vsp-icon-expand { display: none !important; }
+.vsp-wrapper.is-fullscreen .vsp-btn-fs .vsp-icon-compress { display: block !important; }
+
+/* Blindaje contra estilos globales de tema/page builders */
+.vsp-wrapper .vsp-btn-play,
+.vsp-wrapper .vsp-btn-mute,
+.vsp-wrapper .vsp-btn-fs {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    padding: 2px !important;
+}
+
+.vsp-wrapper .vsp-btn-signs {
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    padding: 5px 11px !important;
+    border-radius: 18px !important;
+    min-height: 30px !important;
+}
+
+/* ---- Responsivo ---- */
+@media (max-width: 480px) {
+    .vsp-signs-wrap {
+        width: 130px;
+        height: 85px;
+        bottom: 70px;
+        right: 8px;
+    }
+
+    .vsp-signs-label { display: none; }
+
+    .vsp-subtitles {
+        bottom: 64px;
+        max-width: calc(100% - 16px);
+        padding: 6px 10px;
+    }
+
+    .vsp-subtitles-text { font-size: 12px; }
+
+    .vsp-subtitles-label { display: none; }
+
+    .vsp-vol { width: 50px; }
+}
