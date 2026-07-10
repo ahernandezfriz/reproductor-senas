@@ -4,12 +4,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Comprueba que la URL pertenezca al mismo sitio (seguridad).
+ * Ensure the VTT URL belongs to the same site.
  *
  * @param string $url VTT URL.
  * @return bool
  */
-function vsp_is_allowed_vtt_url( $url ) {
+function ahvpo_is_allowed_vtt_url( $url ) {
 	$home   = wp_parse_url( home_url() );
 	$target = wp_parse_url( $url );
 
@@ -21,12 +21,12 @@ function vsp_is_allowed_vtt_url( $url ) {
 }
 
 /**
- * Resuelve una URL del sitio a ruta local dentro de wp-content.
+ * Resolve a same-site URL to a local path under wp-content.
  *
  * @param string $url VTT URL on this site.
  * @return string Local file path or empty string.
  */
-function vsp_resolve_local_content_file( $url ) {
+function ahvpo_resolve_local_content_file( $url ) {
 	$url = esc_url_raw( $url );
 	if ( empty( $url ) ) {
 		return '';
@@ -54,20 +54,20 @@ function vsp_resolve_local_content_file( $url ) {
 }
 
 /**
- * Obtiene el contenido de un archivo VTT local o del mismo dominio.
+ * Fetch VTT content from a local file or same-domain URL.
  *
  * @param string $url VTT URL.
  * @return string
  */
-function vsp_fetch_vtt_content( $url ) {
+function ahvpo_fetch_vtt_content( $url ) {
 	$url = esc_url_raw( $url );
-	if ( empty( $url ) || ! vsp_is_allowed_vtt_url( $url ) ) {
+	if ( empty( $url ) || ! ahvpo_is_allowed_vtt_url( $url ) ) {
 		return '';
 	}
 
-	$file = vsp_resolve_local_content_file( $url );
+	$file = ahvpo_resolve_local_content_file( $url );
 	if ( $file !== '' ) {
-		$content = file_get_contents( $file );
+		$content = file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Local trusted path only.
 		return ( $content !== false ) ? $content : '';
 	}
 
@@ -91,33 +91,33 @@ function vsp_fetch_vtt_content( $url ) {
 }
 
 /**
- * AJAX: entrega VTT al frontend (mismo origen, sin CORS).
+ * AJAX: deliver VTT to the frontend (same origin, no CORS).
  */
-function vsp_ajax_load_vtt() {
-	check_ajax_referer( 'vsp_vtt', 'nonce' );
+function ahvpo_ajax_load_vtt() {
+	check_ajax_referer( 'ahvpo_vtt', 'nonce' );
 
 	$url = isset( $_POST['url'] ) ? esc_url_raw( wp_unslash( $_POST['url'] ) ) : '';
 	if ( empty( $url ) ) {
-		wp_send_json_error( array( 'message' => __( 'Empty subtitles URL.', 'reproductor-senas' ) ), 400 );
+		wp_send_json_error( array( 'message' => __( 'Empty subtitles URL.', 'arielhf-videopip-overlay' ) ), 400 );
 	}
 
-	$content = vsp_fetch_vtt_content( $url );
+	$content = ahvpo_fetch_vtt_content( $url );
 	if ( $content === '' ) {
-		wp_send_json_error( array( 'message' => __( 'Could not read the VTT file.', 'reproductor-senas' ) ), 404 );
+		wp_send_json_error( array( 'message' => __( 'Could not read the VTT file.', 'arielhf-videopip-overlay' ) ), 404 );
 	}
 
 	wp_send_json_success( array( 'content' => $content ) );
 }
-add_action( 'wp_ajax_vsp_load_vtt', 'vsp_ajax_load_vtt' );
-add_action( 'wp_ajax_nopriv_vsp_load_vtt', 'vsp_ajax_load_vtt' );
+add_action( 'wp_ajax_ahvpo_load_vtt', 'ahvpo_ajax_load_vtt' );
+add_action( 'wp_ajax_nopriv_ahvpo_load_vtt', 'ahvpo_ajax_load_vtt' );
 
 /**
- * Convierte marca de tiempo VTT a segundos.
+ * Convert a VTT timestamp to seconds.
  *
  * @param string $time_str VTT timestamp.
  * @return float
  */
-function vsp_vtt_time_to_seconds( $time_str ) {
+function ahvpo_vtt_time_to_seconds( $time_str ) {
 	$time_str = trim( str_replace( ',', '.', preg_replace( '/\s+.*$/', '', trim( $time_str ) ) ) );
 	$parts    = explode( ':', $time_str );
 	$h        = 0;
@@ -137,12 +137,12 @@ function vsp_vtt_time_to_seconds( $time_str ) {
 }
 
 /**
- * Parsea VTT y devuelve array de cues para el frontend.
+ * Parse VTT and return cues for the frontend.
  *
  * @param string $content Raw VTT content.
  * @return array<int, array{start: float, end: float, text: string}>
  */
-function vsp_parse_vtt_cues( $content ) {
+function ahvpo_parse_vtt_cues( $content ) {
 	$cues  = array();
 	$lines = preg_split( "/\r\n|\r|\n/", preg_replace( '/^\xEF\xBB\xBF/', '', (string) $content ) );
 	$total = count( $lines );
@@ -173,8 +173,8 @@ function vsp_parse_vtt_cues( $content ) {
 			continue;
 		}
 
-		$start = vsp_vtt_time_to_seconds( $matches[1] );
-		$end   = vsp_vtt_time_to_seconds( $matches[2] );
+		$start = ahvpo_vtt_time_to_seconds( $matches[1] );
+		$end   = ahvpo_vtt_time_to_seconds( $matches[2] );
 		$i++;
 
 		$text_lines = array();

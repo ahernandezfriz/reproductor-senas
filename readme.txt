@@ -1,27 +1,27 @@
-=== Sign Language Video Player ===
+=== ArielHF VideoPIP Overlay ===
 Contributors: arielhf
-Tags: video, accessibility, shortcode, subtitles, sign-language
+Tags: video, accessibility, shortcode, subtitles, sign-language, picture-in-picture
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Accessible video player with a synchronized sign language overlay, optional WebVTT subtitles, and support for self-hosted MP4 or Vimeo URLs.
+Video player with an optional picture-in-picture (PiP) mini overlay — ideal for sign language or any secondary synchronized video.
 
 == Description ==
 
-Insert an accessible video player with an optional draggable sign language window, optional WebVTT subtitles, and custom controls that work inside modals and page builders.
+Insert an accessible video player with an optional draggable mini overlay (picture-in-picture style, in-player — not the browser PiP API), optional WebVTT subtitles, and custom controls that work inside modals and page builders.
 
 **Features**
 
 * Main video from a direct file URL or Vimeo
-* Optional sign language video (file or Vimeo), synchronized with the main video
+* Optional mini overlay video (file or Vimeo), synchronized with the main video — typically sign language, or any secondary video
 * Optional WebVTT subtitles from your site's Media Library
-* Draggable sign language window (mouse and touch)
+* Draggable mini overlay window (mouse and touch)
 * Automatic re-sync when playback drifts
-* Coordinated asset loading with graceful degradation if sign language or subtitles fail
+* Coordinated asset loading with graceful degradation if the overlay or subtitles fail
 * Multiple players per page
 * Works in Elementor popups, Bootstrap modals, and other dynamic content
 * No frontend branding or tracking
@@ -38,7 +38,7 @@ Source development repository: https://github.com/ahernandezfriz/reproductor-sen
 
 == Installation ==
 
-1. Upload the `reproductor-senas` folder to `/wp-content/plugins/`
+1. Upload the `arielhf-videopip-overlay` folder to `/wp-content/plugins/`
 2. Activate the plugin through the **Plugins** menu in WordPress
 3. Place the shortcode on any page or post
 
@@ -46,7 +46,7 @@ Source development repository: https://github.com/ahernandezfriz/reproductor-sen
 
 = Can I mix Vimeo and self-hosted videos? =
 
-Yes. `principal` and `senas` are independent. For example, the main video can be on Vimeo while the sign language video is an MP4 in your uploads folder.
+Yes. `principal` and `senas` are independent. For example, the main video can be on Vimeo while the mini overlay is an MP4 in your uploads folder.
 
 = Where should subtitle files live? =
 
@@ -56,9 +56,13 @@ Upload `.vtt` files to your WordPress Media Library. The shortcode must use a UR
 
 Yes. The player initializes on DOM changes, Elementor popup events, and first user interaction as a fallback.
 
+= Is this the browser Picture-in-Picture API? =
+
+No. The mini overlay is an in-player picture-in-picture style window inside the player stage. It does not use the browser PiP API.
+
 == Screenshots ==
 
-1. Player with sign language overlay and custom controls
+1. Player with mini overlay and custom controls
 2. Subtitles displayed above the control bar
 3. Settings page with shortcode documentation
 
@@ -66,21 +70,29 @@ Yes. The player initializes on DOM changes, Elementor popup events, and first us
 
 Basic shortcode:
 
-`[video_senas principal="https://example.com/wp-content/uploads/videos/talk.mp4" senas="https://example.com/wp-content/uploads/videos/talk-signs.mp4"]`
+`[ahvpo_player principal="https://example.com/wp-content/uploads/videos/talk.mp4" senas="https://example.com/wp-content/uploads/videos/talk-signs.mp4"]`
 
 Full example:
 
-`[video_senas principal="https://vimeo.com/123456789" senas="https://example.com/wp-content/uploads/videos/sign-language.mp4" subtitulos="https://example.com/wp-content/uploads/subtitles/talk.vtt" titulo="Accessibility talk" ancho="800px"]`
+`[ahvpo_player principal="https://vimeo.com/123456789" senas="https://example.com/wp-content/uploads/videos/sign-language.mp4" subtitulos="https://example.com/wp-content/uploads/subtitles/talk.vtt" titulo="Accessibility talk" ancho="800px"]`
 
 **Parameters**
 
 * `principal` (required) — Vimeo URL or direct video file URL
-* `senas` (optional) — Sign language video URL (Vimeo or file)
+* `senas` (optional) — Mini overlay video URL (Vimeo or file); typically sign language or any secondary video
 * `subtitulos` (optional) — WebVTT file URL from this site. Leave empty to hide subtitles
 * `titulo` (optional) — Title shown above the player
 * `ancho` (optional) — Maximum width, e.g. `800px` or `100%`. Default: `100%`
 
+Legacy alias: `[video_senas]` still works with the same parameters.
+
 == Changelog ==
+
+= 1.2.0 =
+* Renamed to ArielHF VideoPIP Overlay (distinctive display name and slug for WordPress.org).
+* Prefixed PHP APIs, script handles, AJAX actions, and text domain (`ahvpo_` / `arielhf-videopip-overlay`).
+* Primary shortcode `[ahvpo_player]` with `[video_senas]` kept as a backward-compatible alias.
+* Clarified in-player PiP overlay vs browser Picture-in-Picture API.
 
 = 1.1.0 =
 * WordPress.org release preparation: conditional asset loading, i18n, security hardening, and documentation updates.
@@ -112,5 +124,5 @@ Full example:
 
 == Upgrade Notice ==
 
-= 1.1.0 =
-Recommended update for WordPress.org compatibility, Vimeo support, subtitles, and improved modal behavior.
+= 1.2.0 =
+Recommended update: new plugin name/slug for WordPress.org, prefixed APIs, and shortcode `[ahvpo_player]` (legacy `[video_senas]` still works).

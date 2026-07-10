@@ -99,13 +99,13 @@
     }
 
     function fetchVttContent(url) {
-        var cfg = window.vspConfig || {};
+        var cfg = window.ahvpoConfig || {};
         var params;
         var ajaxUrl = cfg.ajaxUrl;
 
         if (ajaxUrl && cfg.nonce) {
             params = new URLSearchParams();
-            params.append('action', 'vsp_load_vtt');
+            params.append('action', 'ahvpo_load_vtt');
             params.append('nonce', cfg.nonce);
             params.append('url', url);
 
@@ -335,7 +335,7 @@
     }
 
     function vspI18n(key, fallback) {
-        var cfg = window.vspConfig || {};
+        var cfg = window.ahvpoConfig || {};
         return (cfg.i18n && cfg.i18n[key]) ? cfg.i18n[key] : fallback;
     }
 

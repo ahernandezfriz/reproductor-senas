@@ -2,7 +2,7 @@
 /**
  * Uninstall handler.
  *
- * @package ReproductorSenas
+ * @package ArielhfVideopipOverlay
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
