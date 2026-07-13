@@ -14,6 +14,10 @@ Video player with an optional picture-in-picture (PiP) mini overlay — ideal fo
 
 Insert an accessible video player with an optional draggable mini overlay (picture-in-picture style, in-player — not the browser PiP API), optional WebVTT subtitles, and custom controls that work inside modals and page builders.
 
+**Live demo**
+
+[Try the live demo](https://arielhf.cl/plugins-video-pip-overlay/)
+
 **Features**
 
 * Main video from a direct file URL or Vimeo
