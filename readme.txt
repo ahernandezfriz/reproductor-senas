@@ -1,6 +1,6 @@
-=== ArielHF VideoPIP Overlay ===
+=== Reproductor de Video Picture in Picture ===
 Contributors: arielhf
-Tags: video, accessibility, shortcode, subtitles, sign-language, picture-in-picture
+Tags: video, accessibility, subtitles, sign-language, picture-in-picture
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -8,125 +8,125 @@ Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Video player with an optional picture-in-picture (PiP) mini overlay — ideal for sign language or any secondary synchronized video.
+Reproductor con ventana mini picture-in-picture (PiP) opcional, ideal para lengua de señas u otro video secundario.
 
 == Description ==
 
-Insert an accessible video player with an optional draggable mini overlay (picture-in-picture style, in-player — not the browser PiP API), optional WebVTT subtitles, and custom controls that work inside modals and page builders.
+Inserta un reproductor accesible con una ventana mini arrastrable sobre el video principal en modo picture-in-picture (PiP), subtítulos WebVTT opcionales y controles personalizados que funcionan en modales y maquetadores de páginas.
 
-**Live demo**
+**Demo en vivo**
 
-[Try the live demo](https://arielhf.cl/plugins-video-pip-overlay/)
+[Probar la demo en vivo](https://arielhf.cl/plugins-video-pip-overlay/)
 
-**Features**
+**Características**
 
-* Main video from a direct file URL or Vimeo
-* Optional mini overlay video (file or Vimeo), synchronized with the main video — typically sign language, or any secondary video
-* Optional WebVTT subtitles from your site's Media Library
-* Draggable mini overlay window (mouse and touch)
-* Automatic re-sync when playback drifts
-* Coordinated asset loading with graceful degradation if the overlay or subtitles fail
-* Multiple players per page
-* Works in Elementor popups, Bootstrap modals, and other dynamic content
-* No frontend branding or tracking
+* Video principal desde un archivo (URL directa) o Vimeo
+* Video mini opcional (archivo o Vimeo), sincronizado con el principal — normalmente lengua de señas, u otro video secundario
+* Subtítulos WebVTT opcionales desde la Biblioteca de medios
+* Ventana mini arrastrable (ratón y táctil)
+* Re-sincronización automática si se desfasa la reproducción
+* Carga coordinada: si fallan las señas o los subtítulos, el video principal sigue disponible
+* Varios reproductores en la misma página
+* Compatible con popups de Elementor, modales Bootstrap y contenido dinámico
+* Sin branding ni seguimiento en el frontend
 
-**Third-party services**
+**Servicios de terceros**
 
-When you use Vimeo URLs, the player loads Vimeo's embed and Player API. Review Vimeo's terms: https://vimeo.com/terms
+Si usas URLs de Vimeo, el reproductor carga el embed y la API de Vimeo. Revisa sus términos: https://vimeo.com/terms
 
-Subtitle files are read from your own site. This plugin does not send visitor data to analytics services.
+Los subtítulos se leen desde tu propio sitio. Este plugin no envía datos de visitantes a servicios de analítica externos.
 
-**Development**
+**Desarrollo**
 
-Source development repository: https://github.com/ahernandezfriz/reproductor-senas
+Repositorio de desarrollo: https://github.com/ahernandezfriz/reproductor-senas
 
 == Installation ==
 
-1. Upload the `arielhf-videopip-overlay` folder to `/wp-content/plugins/`
-2. Activate the plugin through the **Plugins** menu in WordPress
-3. Place the shortcode on any page or post
+1. Sube la carpeta `arielhf-videopip-overlay` a `/wp-content/plugins/`
+2. Activa el plugin en el menú **Plugins** de WordPress
+3. Inserta el shortcode en cualquier página o entrada
 
 == Frequently Asked Questions ==
 
-= Can I mix Vimeo and self-hosted videos? =
+= ¿Puedo mezclar Vimeo y videos alojados en mi sitio? =
 
-Yes. `principal` and `senas` are independent. For example, the main video can be on Vimeo while the mini overlay is an MP4 in your uploads folder.
+Sí. `principal` y `senas` son independientes. Por ejemplo, el principal puede estar en Vimeo y la ventana mini ser un MP4 en tu carpeta de medios.
 
-= Where should subtitle files live? =
+= ¿Dónde deben estar los subtítulos? =
 
-Upload `.vtt` files to your WordPress Media Library. The shortcode must use a URL from the same site.
+Sube archivos `.vtt` a la Biblioteca de medios de WordPress. El shortcode debe usar una URL del mismo sitio.
 
-= Does it work inside Elementor popups? =
+= ¿Funciona en popups de Elementor? =
 
-Yes. The player initializes on DOM changes, Elementor popup events, and first user interaction as a fallback.
+Sí. El reproductor se inicializa ante cambios del DOM, eventos de popup de Elementor y, como respaldo, en la primera interacción del usuario.
 
-= Is this the browser Picture-in-Picture API? =
+= ¿Soporta YouTube? =
 
-No. The mini overlay is an in-player picture-in-picture style window inside the player stage. It does not use the browser PiP API.
+No. Por ahora solo admite archivos de video (URL directa) y Vimeo.
 
 == Screenshots ==
 
-1. Player with mini overlay and custom controls
-2. Subtitles displayed above the control bar
-3. Settings page with shortcode documentation
+1. Reproductor con ventana mini y controles personalizados
+2. Subtítulos mostrados sobre la barra de controles
+3. Página de ajustes con documentación del shortcode
 
 == Usage ==
 
-Basic shortcode:
+Shortcode básico:
 
-`[ahvpo_player principal="https://example.com/wp-content/uploads/videos/talk.mp4" senas="https://example.com/wp-content/uploads/videos/talk-signs.mp4"]`
+`[ahvpo_player principal="https://example.com/wp-content/uploads/videos/charla.mp4" senas="https://example.com/wp-content/uploads/videos/charla-senas.mp4"]`
 
-Full example:
+Ejemplo completo:
 
-`[ahvpo_player principal="https://vimeo.com/123456789" senas="https://example.com/wp-content/uploads/videos/sign-language.mp4" subtitulos="https://example.com/wp-content/uploads/subtitles/talk.vtt" titulo="Accessibility talk" ancho="800px"]`
+`[ahvpo_player principal="https://vimeo.com/123456789" senas="https://example.com/wp-content/uploads/videos/lengua-senas.mp4" subtitulos="https://example.com/wp-content/uploads/subtitulos/charla.vtt" titulo="Charla de accesibilidad" ancho="800px"]`
 
-**Parameters**
+**Parámetros**
 
-* `principal` (required) — Vimeo URL or direct video file URL
-* `senas` (optional) — Mini overlay video URL (Vimeo or file); typically sign language or any secondary video
-* `subtitulos` (optional) — WebVTT file URL from this site. Leave empty to hide subtitles
-* `titulo` (optional) — Title shown above the player
-* `ancho` (optional) — Maximum width, e.g. `800px` or `100%`. Default: `100%`
+* `principal` (obligatorio) — URL de Vimeo o archivo de video
+* `senas` (opcional) — URL del video de la ventana mini (Vimeo o archivo); normalmente lengua de señas u otro video secundario
+* `subtitulos` (opcional) — URL de archivo WebVTT de este sitio. Déjalo vacío para ocultar subtítulos
+* `titulo` (opcional) — Título mostrado sobre el reproductor
+* `ancho` (opcional) — Ancho máximo, p. ej. `800px` o `100%`. Por defecto: `100%`
 
-Legacy alias: `[video_senas]` still works with the same parameters.
+Alias legado: `[video_senas]` sigue funcionando con los mismos parámetros.
 
 == Changelog ==
 
 = 1.2.0 =
-* Renamed to ArielHF VideoPIP Overlay (distinctive display name and slug for WordPress.org).
-* Prefixed PHP APIs, script handles, AJAX actions, and text domain (`ahvpo_` / `arielhf-videopip-overlay`).
-* Primary shortcode `[ahvpo_player]` with `[video_senas]` kept as a backward-compatible alias.
-* Clarified in-player PiP overlay vs browser Picture-in-Picture API.
+* Renombrado a ArielHF VideoPIP Overlay (nombre y slug distintivos para WordPress.org).
+* Prefijos en APIs PHP, handles de scripts, acciones AJAX y text domain (`ahvpo_` / `arielhf-videopip-overlay`).
+* Shortcode principal `[ahvpo_player]`; `[video_senas]` se mantiene como alias compatible.
+* Documentación del modo picture-in-picture (PiP) con ventana mini sobrepuesta.
 
 = 1.1.0 =
-* WordPress.org release preparation: conditional asset loading, i18n, security hardening, and documentation updates.
-* Support for Vimeo and self-hosted videos in any combination.
-* Optional WebVTT subtitles embedded server-side for reliability.
-* Coordinated loading with warnings when sign language or subtitles fail.
-* Popup/modal compatibility improvements (Elementor, Bootstrap).
+* Preparación para WordPress.org: carga condicional de assets, i18n, endurecimiento de seguridad y documentación.
+* Soporte de Vimeo y videos autoalojados en cualquier combinación.
+* Subtítulos WebVTT opcionales embebidos en el servidor para mayor fiabilidad.
+* Carga coordinada con avisos si fallan las señas o los subtítulos.
+* Mejoras de compatibilidad con popups/modales (Elementor, Bootstrap).
 
 = 1.0.22 =
-* Vimeo player integration for main and sign language videos.
-* Mixed source support (Vimeo + local files).
+* Integración del reproductor Vimeo para video principal y de señas.
+* Soporte de fuentes mixtas (Vimeo + archivos locales).
 
 = 1.0.21 =
-* Coordinated asset loading and user-facing load states.
+* Carga coordinada de assets y estados de carga visibles para el usuario.
 
 = 1.0.20 =
-* Fixed WebVTT parsing and server-side cue embedding.
+* Corrección del parseo WebVTT y del embebido de cues en el servidor.
 
 = 1.0.19 =
-* Subtitle button styling and version sync.
+* Estilos del botón de subtítulos y sincronización de versión.
 
 = 1.0.7 =
-* Robust initialization in dynamic modals and popups.
-* Sign language window enabled by default.
-* ARIA improvements.
+* Inicialización robusta en modales y popups dinámicos.
+* Ventana de señas activada por defecto.
+* Mejoras ARIA.
 
 = 1.0.0 =
-* Initial release.
+* Lanzamiento inicial.
 
 == Upgrade Notice ==
 
 = 1.2.0 =
-Recommended update: new plugin name/slug for WordPress.org, prefixed APIs, and shortcode `[ahvpo_player]` (legacy `[video_senas]` still works).
+Actualización recomendada: nuevo nombre/slug para WordPress.org, APIs con prefijo y shortcode `[ahvpo_player]` (el alias `[video_senas]` sigue funcionando).

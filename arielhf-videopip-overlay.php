@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       ArielHF VideoPIP Overlay
+ * Plugin Name:       Reproductor de Video Picture in Picture
  * Plugin URI:        https://github.com/ahernandezfriz/reproductor-senas
  * Description:       Video player with an optional picture-in-picture (PiP) mini overlay — ideal for sign language or any secondary synchronized video. Supports self-hosted MP4, Vimeo, and optional WebVTT subtitles.
  * Version:           1.2.0
