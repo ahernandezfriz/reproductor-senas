@@ -96,6 +96,7 @@ Alias legado: `[video_senas]` sigue funcionando con los mismos parámetros.
 * Carga de traducciones (`load_plugin_textdomain`) y paquetes es_ES / es_CL.
 * Seguridad: rutas locales de subtítulos VTT validadas con realpath bajo uploads/wp-content.
 * i18n: cadenas fuente en inglés; la UI en español se carga según el idioma del sitio.
+* Nombre y descripción del plugin en el listado se traducen según el idioma de WordPress.
 * Prefijo unificado de clases CSS/HTML/JS: `ahvpo-` (antes `vsp-`).
 
 = 1.2.3 =

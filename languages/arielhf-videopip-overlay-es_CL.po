@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: arielhf-videopip-overlay 1.2.3\n"
+"Project-Id-Version: arielhf-videopip-overlay 1.2.4\n"
 "Report-Msgid-Bugs-To: https://github.com/ahernandezfriz/reproductor-senas\n"
 "Language: es_CL\n"
 "MIME-Version: 1.0\n"
@@ -12,6 +12,15 @@ msgstr ""
 
 msgid "Picture-in-Picture Video Player"
 msgstr "Reproductor de Video Picture in Picture"
+
+msgid ""
+"Video player with an optional picture-in-picture (PiP) mini overlay — ideal "
+"for sign language or any secondary synchronized video. Supports self-hosted "
+"MP4, Vimeo, and optional WebVTT subtitles."
+msgstr ""
+"Reproductor de video con una ventana mini picture-in-picture (PiP) opcional "
+"— ideal para lengua de señas o cualquier video secundario sincronizado. "
+"Compatible con MP4 autoalojado, Vimeo y subtítulos WebVTT opcionales."
 
 msgid "PiP Player"
 msgstr "Reproductor PiP"
