@@ -155,11 +155,6 @@
     background: #000;
 }
 
-.vsp-signs-vimeo {
-    position: absolute;
-    inset: 0;
-}
-
 .vsp-wrapper.is-vimeo-main .vsp-overlay-play,
 .vsp-wrapper.is-vimeo-main .vsp-subtitles,
 .vsp-wrapper.is-vimeo-main .vsp-controls,
@@ -170,6 +165,28 @@
     z-index: 5;
 }
 
+.vsp-wrapper.is-vimeo-main .vsp-controls {
+    z-index: 8;
+}
+
+.vsp-wrapper.is-vimeo-main .vsp-signs-wrap {
+    z-index: 6;
+}
+
+.vsp-wrapper.is-vimeo-main .vsp-overlay-play {
+    z-index: 5;
+    pointer-events: auto;
+}
+
+.vsp-wrapper.is-vimeo-main .vsp-overlay-play .vsp-big-play {
+    pointer-events: auto;
+}
+
+.vsp-wrapper.is-vimeo-main .vsp-signs-wrap.is-dragging,
+.vsp-wrapper.is-vimeo-main .vsp-signs-wrap.is-resizing {
+    z-index: 12;
+}
+
 .vsp-wrapper.is-vimeo-main .vsp-loading,
 .vsp-wrapper.is-vimeo-main .vsp-load-error {
     z-index: 30;
@@ -178,7 +195,7 @@
 /* ---- Recuadro de señas ---- */
 .vsp-signs-wrap {
     position: absolute;
-    bottom: 80px;
+    bottom: 110px;
     right: 16px;
     width: 200px;
     height: 130px;
@@ -189,36 +206,100 @@
     display: none;
     cursor: grab;
     user-select: none;
-    z-index: 10;
+    z-index: 6; /* por encima de .vsp-overlay-play (5) para arrastrar en pausa */
     touch-action: none;
+    pointer-events: auto;
+    box-sizing: border-box;
+}
+
+.vsp-signs-wrap.is-dragging,
+.vsp-signs-wrap.is-resizing {
+    z-index: 12;
 }
 
 .vsp-signs-wrap.is-dragging {
     cursor: grabbing;
 }
 
+.vsp-signs-wrap.is-resizing {
+    cursor: nwse-resize;
+}
+
+.vsp-signs,
+.vsp-signs-vimeo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+    border: 0;
+    background: #000;
+}
+
+.vsp-signs-hit {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    cursor: grab;
+    touch-action: none;
+}
+
+.vsp-signs-wrap.is-dragging .vsp-signs-hit {
+    cursor: grabbing;
+}
+
+.vsp-signs-resize {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    z-index: 4;
+    padding: 0;
+    border: 0;
+    border-radius: 7px 0 0 0;
+    background:
+        linear-gradient(315deg, transparent 0 45%, rgba(255,255,255,.35) 45% 52%, transparent 52% 62%, rgba(255,255,255,.55) 62% 68%, transparent 68% 78%, rgba(255,255,255,.8) 78% 85%, transparent 85%);
+    cursor: nwse-resize;
+    opacity: 0;
+    transition: opacity .15s;
+    touch-action: none;
+}
+
+.vsp-signs-wrap:hover .vsp-signs-resize,
+.vsp-signs-wrap.is-resizing .vsp-signs-resize,
+.vsp-signs-wrap.is-dragging .vsp-signs-resize {
+    opacity: 1;
+}
+
 .vsp-signs-dragbar {
     position: absolute;
-    top: 0;
     left: 0;
     right: 0;
-    z-index: 2;
+    bottom: 0;
+    height: 28px;
+    z-index: 3;
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 5px 8px;
-    background: rgba(0, 0, 0, .72);
+    padding: 0 8px;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, .78);
     color: #fff;
     cursor: grab;
-    border-bottom: 1px solid rgba(255, 255, 255, .2);
+    border-top: 1px solid rgba(255, 255, 255, .2);
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateY(4px);
     transition: opacity .2s ease, transform .2s ease;
     pointer-events: none;
+    touch-action: none;
 }
 
 .vsp-signs-wrap:hover .vsp-signs-dragbar,
-.vsp-signs-wrap.is-dragging .vsp-signs-dragbar {
+.vsp-signs-wrap.is-dragging .vsp-signs-dragbar,
+.vsp-signs-wrap.is-resizing .vsp-signs-dragbar {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
@@ -250,14 +331,6 @@
     white-space: nowrap;
 }
 
-.vsp-signs {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    pointer-events: none;
-}
-
 /* ---- Overlay play central ---- */
 .vsp-overlay-play {
     position: absolute;
@@ -267,6 +340,7 @@
     justify-content: center;
     cursor: pointer;
     z-index: 5;
+    pointer-events: auto;
 }
 
 .vsp-big-play {
@@ -277,7 +351,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background .2s;
+    transition: background .2s, opacity .15s;
+    pointer-events: auto;
 }
 
 .vsp-overlay-play:hover .vsp-big-play {
@@ -288,10 +363,10 @@
 .vsp-subtitles {
     position: absolute;
     left: 50%;
-    bottom: 72px;
+    bottom: 82px; /* un poco más abajo para no solapar el PiP */
     transform: translateX(-50%);
     z-index: 7;
-    max-width: calc(100% - 28px);
+    max-width: min(60%, calc(100% - 28px));
     width: max-content;
     padding: 8px 14px;
     background: #000;
@@ -302,6 +377,7 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity .2s ease, visibility .2s ease;
+    box-sizing: border-box;
 }
 
 .vsp-subtitles.is-visible {
@@ -315,6 +391,8 @@
     line-height: 1.45;
     font-weight: 500;
     white-space: pre-line;
+    overflow-wrap: anywhere;
+    word-wrap: break-word;
 }
 
 /* ---- Barra de controles ---- */
@@ -325,21 +403,22 @@
     right: 0;
     padding: 10px 14px 12px;
     background: linear-gradient(transparent, rgba(0,0,0,.78));
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
     gap: 8px;
-    z-index: 6;
+    z-index: 8;
     opacity: 1;
-    transform: translateY(0);
-    transition: opacity .25s ease, transform .25s ease;
+    transform: none !important;
+    transition: opacity .25s ease;
     pointer-events: auto;
+    box-sizing: border-box;
 }
 
 /* Ocultar controles al reproducir (clase aplicada por JS) */
 .vsp-wrapper .vsp-controls.vsp-controls--hidden {
     opacity: 0 !important;
     visibility: hidden !important;
-    transform: translateY(12px) !important;
     pointer-events: none !important;
 }
 
@@ -347,15 +426,18 @@
 .vsp-wrapper.is-playing:hover .vsp-controls.vsp-controls--hidden {
     opacity: 1 !important;
     visibility: visible !important;
-    transform: translateY(0) !important;
     pointer-events: auto !important;
 }
 
 /* Fila de progreso */
 .vsp-progress-row {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    align-items: center !important;
     gap: 8px;
+    position: relative !important;
+    width: 100%;
+    margin: 0 !important;
+    float: none !important;
 }
 
 .vsp-time-cur,
@@ -390,12 +472,18 @@
 
 /* Fila de botones */
 .vsp-btn-row {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    align-items: center !important;
     gap: 7px;
+    flex-wrap: nowrap;
+    min-height: 30px;
+    position: relative !important;
+    width: 100%;
+    margin: 0 !important;
+    float: none !important;
 }
 
-.vsp-spacer { flex: 1; }
+.vsp-spacer { flex: 1; min-width: 4px; }
 
 /* Botones genéricos */
 .vsp-btn-play,
@@ -417,6 +505,7 @@
     line-height: 1;
     opacity: .9;
     transition: opacity .15s;
+    vertical-align: middle;
 }
 
 .vsp-btn-play:hover,
@@ -430,7 +519,13 @@
 
 .vsp-wrapper.is-playing .vsp-icon-play  { display: none; }
 .vsp-wrapper.is-playing .vsp-icon-pause { display: block; }
-.vsp-wrapper.is-playing .vsp-overlay-play { display: none; }
+/* Capa transparente para play/pause; el botón grande se oculta al reproducir.
+   El PiP (.vsp-signs-wrap) queda por encima (z-index 6) y sigue siendo arrastrable. */
+.vsp-wrapper.is-playing .vsp-overlay-play .vsp-big-play {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
 
 .vsp-wrapper.is-muted .vsp-icon-vol    { display: none; }
 .vsp-wrapper.is-muted .vsp-icon-muted  { display: block; }
@@ -440,15 +535,114 @@
 
 /* Volumen */
 .vsp-vol-group {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+    position: static !important;
+    line-height: 0 !important;
+    vertical-align: middle !important;
 }
 
-.vsp-vol {
-    width: 52px;
+.vsp-vol-slot {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 56px !important;
+    height: 24px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+    flex: 0 0 56px !important;
+    overflow: visible !important;
+    position: static !important;
+    vertical-align: middle !important;
+}
+
+.vsp-wrapper .vsp-controls .vsp-vol-slot .vsp-vol,
+.vsp-wrapper .vsp-controls input.vsp-vol[type="range"] {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    display: block !important;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 56px !important;
+    /* En Chrome/Edge la pista se dibuja arriba del input si este es alto.
+       Altura = pista; el flex del slot la centra con el icono. */
+    height: 4px !important;
+    min-height: 4px !important;
+    max-height: 4px !important;
+    margin: 10px 0 !important; /* (24 - 4) / 2 → centra en el slot de 24px */
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 2px !important;
+    background: rgba(255, 255, 255, .35) !important;
+    box-shadow: none !important;
+    outline: none !important;
     accent-color: #fff;
     cursor: pointer;
+    float: none !important;
+    transform: none !important;
+    line-height: 4px !important;
+    font-size: 4px !important;
+    box-sizing: content-box !important;
+    vertical-align: middle !important;
+    align-self: center !important;
+}
+
+.vsp-wrapper .vsp-controls input.vsp-vol[type="range"]::-webkit-slider-runnable-track {
+    -webkit-appearance: none !important;
+    height: 4px !important;
+    border-radius: 2px !important;
+    background: rgba(255, 255, 255, .35) !important;
+    border: none !important;
+}
+
+.vsp-wrapper .vsp-controls input.vsp-vol[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 12px !important;
+    height: 12px !important;
+    margin-top: -4px !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    transform: none !important;
+}
+
+.vsp-wrapper .vsp-controls input.vsp-vol[type="range"]::-moz-range-track {
+    height: 4px !important;
+    border-radius: 2px !important;
+    background: rgba(255, 255, 255, .35) !important;
+    border: none !important;
+}
+
+.vsp-wrapper .vsp-controls input.vsp-vol[type="range"]::-moz-range-thumb {
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    transform: none !important;
+}
+
+.vsp-wrapper .vsp-controls input.vsp-vol[type="range"]::-moz-focus-outer {
+    border: 0 !important;
 }
 
 /* Botón de subtítulos */
@@ -486,6 +680,14 @@
     padding: 5px 11px !important;
     border-radius: 18px !important;
     min-height: 30px !important;
+    height: 30px !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+    flex: 0 0 auto;
+}
+
+.vsp-subtitles-label {
+    white-space: nowrap;
 }
 
 /* Botón de señas */
@@ -502,6 +704,11 @@
     font-size: 10px;
     transition: background .2s, border-color .2s;
     line-height: 1.1;
+    white-space: nowrap;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    height: 30px;
+    min-height: 30px;
 }
 
 .vsp-btn-signs:hover {
@@ -579,6 +786,14 @@
     padding: 5px 11px !important;
     border-radius: 18px !important;
     min-height: 30px !important;
+    height: 30px !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+}
+
+.vsp-signs-label {
+    white-space: nowrap;
 }
 
 /* ---- Responsivo ---- */
@@ -586,15 +801,15 @@
     .vsp-signs-wrap {
         width: 130px;
         height: 85px;
-        bottom: 70px;
+        bottom: 100px;
         right: 8px;
     }
 
-    .vsp-signs-label { display: none; }
+    .vsp-signs-dragbar-label { display: none; }
 
     .vsp-subtitles {
-        bottom: 64px;
-        max-width: calc(100% - 16px);
+        bottom: 78px;
+        max-width: min(60%, calc(100% - 16px));
         padding: 6px 10px;
     }
 

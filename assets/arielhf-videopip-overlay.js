@@ -805,9 +805,9 @@
         if (btnSubs && subsBox && subsText) {
             function applySubsState() {
                 wrap.classList.toggle('is-subs-on', subsOn);
-                if (subsLbl) subsLbl.textContent = subsOn ? vspI18n('subsOn', 'Disable subtitles') : vspI18n('subsOff', 'Enable subtitles');
+                if (subsLbl) subsLbl.textContent = subsOn ? vspI18n('subsOn', 'Desactivar subtítulos') : vspI18n('subsOff', 'Activar subtítulos');
                 btnSubs.setAttribute('aria-pressed', String(subsOn));
-                btnSubs.setAttribute('aria-label', subsOn ? vspI18n('subsOn', 'Disable subtitles') : vspI18n('subsOff', 'Enable subtitles'));
+                btnSubs.setAttribute('aria-label', subsOn ? vspI18n('subsOn', 'Desactivar subtítulos') : vspI18n('subsOff', 'Activar subtítulos'));
                 updateSubtitlesDisplay();
             }
 
@@ -871,14 +871,18 @@
         }
 
         /* ---------- Lengua de señas ---------- */
+        var reflowSignsPosition = function () {};
+        var onSignsFullscreenTransition = function () {};
+
         if (btnSigns && vSigns && signsWrap) {
             function applySignsState() {
                 var mainWasPlaying = !vMain.paused && !vMain.ended && vMain.readyState > 2;
 
                 signsWrap.style.display = signsOn ? 'block' : 'none';
                 signsWrap.setAttribute('aria-hidden', signsOn ? 'false' : 'true');
-                if (signsLbl) signsLbl.textContent = signsOn ? vspI18n('signsOn', 'Disable sign language') : vspI18n('signsOff', 'Enable sign language');
+                if (signsLbl) signsLbl.textContent = signsOn ? vspI18n('signsOn', 'Desactivar lengua de señas') : vspI18n('signsOff', 'Activar lengua de señas');
                 btnSigns.setAttribute('aria-pressed', String(signsOn));
+                btnSigns.setAttribute('aria-label', signsOn ? vspI18n('signsOn', 'Desactivar lengua de señas') : vspI18n('signsOff', 'Activar lengua de señas'));
 
                 if (signsOn && loadState.signs === 'ready') {
                     vSigns.currentTime = vMain.currentTime;
@@ -911,11 +915,112 @@
             // Estado inicial: señas activadas por defecto.
             applySignsState();
 
-            /* -- Arrastrar recuadro de señas (toda el área) -- */
+            /* -- Arrastrar / redimensionar recuadro de señas -- */
             var dragging = false;
+            var resizing = false;
             var signsMoved = false;
             var dragOx = 0;
             var dragOy = 0;
+            var resizeStartX = 0;
+            var resizeStartY = 0;
+            var resizeStartW = 0;
+            var resizeStartH = 0;
+            var resizeFixedRight = 0;
+            var resizeFixedBottom = 0;
+            var SIGNS_SCALE_MAX = 1.25;
+            // Posición “en casa” (modo normal). Al salir de fullscreen vuelve al default CSS.
+            var signsHomeRatio = null;
+            var signsHomeScale = 1;
+            var signsResizeBtn = signsWrap.querySelector('.vsp-signs-resize');
+
+            function isPlayerFullscreen() {
+                return !!(document.fullscreenElement || document.webkitFullscreenElement);
+            }
+
+            function getSignsBaseSize() {
+                if (window.matchMedia && window.matchMedia('(max-width: 480px)').matches) {
+                    return { w: 130, h: 85 };
+                }
+                return { w: 200, h: 130 };
+            }
+
+            function clearSignsInlinePos() {
+                signsWrap.style.left = '';
+                signsWrap.style.top = '';
+                signsWrap.style.right = '';
+                signsWrap.style.bottom = '';
+                signsWrap.style.width = '';
+                signsWrap.style.height = '';
+                signsHomeScale = 1;
+            }
+
+            function applySignsScale(scale) {
+                var base = getSignsBaseSize();
+                var s = Math.min(SIGNS_SCALE_MAX, Math.max(1, scale || 1));
+                signsHomeScale = s;
+                signsWrap.style.width = Math.round(base.w * s) + 'px';
+                signsWrap.style.height = Math.round(base.h * s) + 'px';
+            }
+
+            function readSignsRatioFromLayout() {
+                var maxX = Math.max(0, stage.clientWidth - signsWrap.offsetWidth);
+                var maxY = Math.max(0, stage.clientHeight - signsWrap.offsetHeight);
+                var left = parseFloat(signsWrap.style.left);
+                var top = parseFloat(signsWrap.style.top);
+                if (isNaN(left) || isNaN(top)) return null;
+                return {
+                    x: maxX > 0 ? Math.min(1, Math.max(0, left / maxX)) : 0,
+                    y: maxY > 0 ? Math.min(1, Math.max(0, top / maxY)) : 0
+                };
+            }
+
+            function saveSignsHomeRatio() {
+                var ratio = readSignsRatioFromLayout();
+                if (ratio) signsHomeRatio = ratio;
+            }
+
+            function applySignsRatio(ratio) {
+                if (!ratio) return;
+                var maxX = Math.max(0, stage.clientWidth - signsWrap.offsetWidth);
+                var maxY = Math.max(0, stage.clientHeight - signsWrap.offsetHeight);
+                signsWrap.style.left = (ratio.x * maxX) + 'px';
+                signsWrap.style.top = (ratio.y * maxY) + 'px';
+                signsWrap.style.right = 'auto';
+                signsWrap.style.bottom = 'auto';
+            }
+
+            function clampSignsInStage() {
+                if (signsWrap.style.left === '' && signsWrap.style.top === '') return;
+                var left = parseFloat(signsWrap.style.left);
+                var top = parseFloat(signsWrap.style.top);
+                if (isNaN(left) || isNaN(top)) return;
+                var maxX = Math.max(0, stage.clientWidth - signsWrap.offsetWidth);
+                var maxY = Math.max(0, stage.clientHeight - signsWrap.offsetHeight);
+                signsWrap.style.left = Math.min(maxX, Math.max(0, left)) + 'px';
+                signsWrap.style.top = Math.min(maxY, Math.max(0, top)) + 'px';
+            }
+
+            reflowSignsPosition = function () {
+                if (signsHomeScale > 1) {
+                    applySignsScale(signsHomeScale);
+                }
+                if (isPlayerFullscreen()) {
+                    clampSignsInStage();
+                    return;
+                }
+                if (signsHomeRatio) {
+                    applySignsRatio(signsHomeRatio);
+                }
+            };
+
+            onSignsFullscreenTransition = function (isFs, wasFs) {
+                if (!isFs && wasFs) {
+                    // Al salir de fullscreen: posición y tamaño por defecto (CSS).
+                    clearSignsInlinePos();
+                    signsHomeRatio = null;
+                    signsHomeScale = 1;
+                }
+            };
 
             function anchorSignsPosition() {
                 var wrapRect  = signsWrap.getBoundingClientRect();
@@ -940,6 +1045,9 @@
                 dragging = false;
                 signsWrap.classList.remove('is-dragging');
                 if (signsMoved) {
+                    if (!isPlayerFullscreen()) {
+                        saveSignsHomeRatio();
+                    }
                     blockStageClick = true;
                     setTimeout(function () { blockStageClick = false; }, 250);
                 }
@@ -957,48 +1065,197 @@
                 signsWrap.style.top  = Math.min(maxY, Math.max(0, y)) + 'px';
             }
 
+            function startResize(clientX, clientY) {
+                anchorSignsPosition();
+                resizeStartX = clientX;
+                resizeStartY = clientY;
+                resizeStartW = signsWrap.offsetWidth;
+                resizeStartH = signsWrap.offsetHeight;
+                var left = parseFloat(signsWrap.style.left);
+                var top = parseFloat(signsWrap.style.top);
+                if (isNaN(left)) left = 0;
+                if (isNaN(top)) top = 0;
+                // Esquina inferior-derecha fija; se estira desde arriba-izquierda.
+                resizeFixedRight = left + resizeStartW;
+                resizeFixedBottom = top + resizeStartH;
+                resizing = true;
+                signsMoved = false;
+                signsWrap.classList.add('is-resizing');
+            }
+
+            function moveResize(clientX, clientY) {
+                if (!resizing) return;
+                signsMoved = true;
+                var base = getSignsBaseSize();
+                var aspect = base.w / base.h;
+                // Tirar del handle hacia arriba/izquierda = agrandar.
+                var delta = Math.max(resizeStartX - clientX, resizeStartY - clientY);
+                var maxW = Math.round(base.w * SIGNS_SCALE_MAX);
+                var minW = base.w;
+                var newW = Math.round(resizeStartW + delta);
+                newW = Math.min(maxW, Math.max(minW, newW));
+                var newH = Math.round(newW / aspect);
+
+                var newLeft = resizeFixedRight - newW;
+                var newTop = resizeFixedBottom - newH;
+
+                if (newLeft < 0) {
+                    newLeft = 0;
+                    newW = Math.min(maxW, Math.max(minW, Math.round(resizeFixedRight - newLeft)));
+                    newH = Math.round(newW / aspect);
+                    newTop = resizeFixedBottom - newH;
+                }
+                if (newTop < 0) {
+                    newTop = 0;
+                    newH = Math.min(Math.round(maxW / aspect), Math.max(Math.round(minW / aspect), Math.round(resizeFixedBottom - newTop)));
+                    newW = Math.round(newH * aspect);
+                    newW = Math.min(maxW, Math.max(minW, newW));
+                    newH = Math.round(newW / aspect);
+                    newLeft = resizeFixedRight - newW;
+                    if (newLeft < 0) {
+                        newLeft = 0;
+                        newW = Math.min(maxW, Math.max(minW, Math.round(resizeFixedRight)));
+                        newH = Math.round(newW / aspect);
+                        newTop = Math.max(0, resizeFixedBottom - newH);
+                    }
+                }
+
+                // No salir por la derecha/abajo del stage.
+                if (newLeft + newW > stage.clientWidth) {
+                    newW = Math.max(minW, stage.clientWidth - newLeft);
+                    newH = Math.round(newW / aspect);
+                    newTop = resizeFixedBottom - newH;
+                    if (newTop < 0) newTop = 0;
+                }
+                if (newTop + newH > stage.clientHeight) {
+                    newH = Math.max(Math.round(minW / aspect), stage.clientHeight - newTop);
+                    newW = Math.round(newH * aspect);
+                    newLeft = resizeFixedRight - newW;
+                    if (newLeft < 0) newLeft = 0;
+                }
+
+                signsWrap.style.width = newW + 'px';
+                signsWrap.style.height = newH + 'px';
+                signsWrap.style.left = newLeft + 'px';
+                signsWrap.style.top = newTop + 'px';
+                signsWrap.style.right = 'auto';
+                signsWrap.style.bottom = 'auto';
+                signsHomeScale = newW / base.w;
+            }
+
+            function endResize() {
+                if (!resizing) return;
+                resizing = false;
+                signsWrap.classList.remove('is-resizing');
+                if (signsMoved) {
+                    if (!isPlayerFullscreen()) {
+                        saveSignsHomeRatio();
+                    }
+                    blockStageClick = true;
+                    setTimeout(function () { blockStageClick = false; }, 250);
+                }
+            }
+
             function onSignsPointerDown(e) {
                 if (!signsOn || signsWrap.getAttribute('aria-hidden') === 'true') return;
                 if (e.button !== undefined && e.button !== 0) return;
+                if (e.target && e.target.closest && e.target.closest('.vsp-signs-resize')) return;
                 startDrag(e.clientX, e.clientY);
                 e.preventDefault();
                 e.stopPropagation();
             }
 
+            function onResizePointerDown(e) {
+                if (!signsOn || signsWrap.getAttribute('aria-hidden') === 'true') return;
+                if (e.button !== undefined && e.button !== 0) return;
+                startResize(e.clientX, e.clientY);
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            // Evitar que el clic en el PiP active play/pause del video principal.
+            // Solo en bubble (no capture): en capture + stopPropagation el evento no llega a hijos y el arrastre falla.
+            signsWrap.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
             signsWrap.addEventListener('mousedown', onSignsPointerDown);
             signsWrap.addEventListener('touchstart', function (e) {
                 if (!signsOn || signsWrap.getAttribute('aria-hidden') === 'true') return;
+                if (e.target && e.target.closest && e.target.closest('.vsp-signs-resize')) return;
                 startDrag(e.touches[0].clientX, e.touches[0].clientY);
                 e.preventDefault();
+                e.stopPropagation();
             }, { passive: false });
 
+            if (signsResizeBtn) {
+                signsResizeBtn.addEventListener('mousedown', onResizePointerDown);
+                signsResizeBtn.addEventListener('touchstart', function (e) {
+                    if (!signsOn || signsWrap.getAttribute('aria-hidden') === 'true') return;
+                    startResize(e.touches[0].clientX, e.touches[0].clientY);
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, { passive: false });
+            }
+
             document.addEventListener('mousemove', function (e) {
+                if (resizing) {
+                    moveResize(e.clientX, e.clientY);
+                    return;
+                }
                 moveDrag(e.clientX, e.clientY);
             });
-            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('mouseup', function () {
+                endResize();
+                endDrag();
+            });
             document.addEventListener('touchmove', function (e) {
+                if (resizing) {
+                    moveResize(e.touches[0].clientX, e.touches[0].clientY);
+                    return;
+                }
                 if (!dragging) return;
                 moveDrag(e.touches[0].clientX, e.touches[0].clientY);
             }, { passive: true });
-            document.addEventListener('touchend', endDrag);
-            document.addEventListener('touchcancel', endDrag);
+            document.addEventListener('touchend', function () {
+                endResize();
+                endDrag();
+            });
+            document.addEventListener('touchcancel', function () {
+                endResize();
+                endDrag();
+            });
+
+            window.addEventListener('resize', function () {
+                reflowSignsPosition();
+            });
         }
 
         /* ---------- Pantalla completa ---------- */
         if (btnFs) {
             bindControlClick(btnFs, function () {
-                if (!document.fullscreenElement) {
+                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
                     (stage.requestFullscreen || stage.webkitRequestFullscreen || stage.mozRequestFullScreen).call(stage);
                 } else {
                     (document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen).call(document);
                 }
             });
 
-            document.addEventListener('fullscreenchange', function () {
-                var isFs = !!document.fullscreenElement;
+            function onFullscreenChange() {
+                var wasFs = wrap.classList.contains('is-fullscreen');
+                var isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+                onSignsFullscreenTransition(isFs, wasFs);
                 wrap.classList.toggle('is-fullscreen', isFs);
                 btnFs.setAttribute('aria-label', isFs ? vspI18n('exitFullscreen', 'Exit fullscreen') : vspI18n('fullscreen', 'Fullscreen'));
-            });
+
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(reflowSignsPosition);
+                });
+            }
+
+            document.addEventListener('fullscreenchange', onFullscreenChange);
+            document.addEventListener('webkitfullscreenchange', onFullscreenChange);
         }
     }
 

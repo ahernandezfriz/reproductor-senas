@@ -3,7 +3,7 @@
  * Plugin Name:       Reproductor de Video Picture in Picture
  * Plugin URI:        https://github.com/ahernandezfriz/reproductor-senas
  * Description:       Video player with an optional picture-in-picture (PiP) mini overlay — ideal for sign language or any secondary synchronized video. Supports self-hosted MP4, Vimeo, and optional WebVTT subtitles.
- * Version:           1.2.0
+ * Version:           1.2.3
  * Requires at least: 5.6
  * Requires PHP:      7.4
  * Author:            Ariel Hernández Friz
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'AHVPO_VERSION', '1.2.0' );
+define( 'AHVPO_VERSION', '1.2.3' );
 define( 'AHVPO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AHVPO_URL', plugin_dir_url( __FILE__ ) );
 

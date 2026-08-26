@@ -4,7 +4,7 @@ Tags: video, accessibility, subtitles, sign-language, picture-in-picture
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.2.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -92,6 +92,24 @@ Alias legado: `[video_senas]` sigue funcionando con los mismos parámetros.
 
 == Changelog ==
 
+= 1.2.3 =
+* Subtítulos: barra más corta (máx. 60% del ancho) y un poco más abajo para no tapar el video secundario (PiP).
+
+= 1.2.2 =
+* Corrección: arrastrar el video secundario también en pausa o antes de reproducir (ya no lo tapa el overlay de play).
+* Corrección: clic en el secundario ya no inicia/pausa el video principal.
+* Corrección: play/pausa con clic en el área del video principal se mantiene al reproducir.
+* Barra “Arrastrar para mover” y asa de redimensionar solo visibles al pasar el mouse.
+* Alineación del control de volumen con el icono de mute.
+
+= 1.2.1 =
+* Corrección: al salir de pantalla completa, el video secundario vuelve a su posición y tamaño por defecto (ya no desaparecía si se había movido en fullscreen).
+* Nuevo: redimensionar la ventana secundaria desde la esquina superior izquierda (hasta un 25% más).
+* Barra “Arrastrar para mover” reubicada abajo para no interferir con el control de tamaño.
+* Textos de los botones de subtítulos y lengua de señas en español.
+* Nombre visible actualizado a “Reproductor de Video Picture in Picture”.
+* Readme del directorio en español y límite de 5 etiquetas.
+
 = 1.2.0 =
 * Renombrado a ArielHF VideoPIP Overlay (nombre y slug distintivos para WordPress.org).
 * Prefijos en APIs PHP, handles de scripts, acciones AJAX y text domain (`ahvpo_` / `arielhf-videopip-overlay`).
@@ -127,6 +145,15 @@ Alias legado: `[video_senas]` sigue funcionando con los mismos parámetros.
 * Lanzamiento inicial.
 
 == Upgrade Notice ==
+
+= 1.2.3 =
+Ajusta el tamaño y posición de los subtítulos para que no se superpongan al video secundario.
+
+= 1.2.2 =
+Corrige arrastre del PiP en pausa, clics que interferían con play/pausa y la alineación del control de volumen.
+
+= 1.2.1 =
+Mejora el video secundario (redimensionar), corrige el fallo al salir de pantalla completa y actualiza textos en español.
 
 = 1.2.0 =
 Actualización recomendada: nuevo nombre/slug para WordPress.org, APIs con prefijo y shortcode `[ahvpo_player]` (el alias `[video_senas]` sigue funcionando).
