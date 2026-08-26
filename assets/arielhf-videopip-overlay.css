@@ -1,24 +1,24 @@
 /* Reproductor de Video con Lengua de Señas - v1.0.15 */
 
-.vsp-wrapper {
+.ahvpo-wrapper {
     margin: 0 auto 2rem;
     font-family: inherit;
 }
 
-.vsp-error {
+.ahvpo-error {
     color: #c00;
     padding: .5rem;
     border-left: 3px solid #c00;
 }
 
-.vsp-titulo {
+.ahvpo-titulo {
     margin: 0 0 10px;
     font-size: 15px;
     font-weight: 500;
 }
 
 /* ---- Stage ---- */
-.vsp-stage {
+.ahvpo-stage {
     position: relative;
     background: #000;
     border-radius: 10px;
@@ -28,7 +28,7 @@
 }
 
 /* ---- Carga coordinada de recursos ---- */
-.vsp-loading {
+.ahvpo-loading {
     position: absolute;
     inset: 0;
     z-index: 30;
@@ -43,32 +43,32 @@
     padding: 16px;
 }
 
-.vsp-wrapper.is-ready .vsp-loading,
-.vsp-wrapper.is-load-error .vsp-loading {
+.ahvpo-wrapper.is-ready .ahvpo-loading,
+.ahvpo-wrapper.is-load-error .ahvpo-loading {
     display: none;
 }
 
-.vsp-loading-spinner {
+.ahvpo-loading-spinner {
     width: 40px;
     height: 40px;
     border: 3px solid rgba(255, 255, 255, .25);
     border-top-color: #fff;
     border-radius: 50%;
-    animation: vsp-spin .8s linear infinite;
+    animation: ahvpo-spin .8s linear infinite;
 }
 
-@keyframes vsp-spin {
+@keyframes ahvpo-spin {
     to { transform: rotate(360deg); }
 }
 
-.vsp-loading-text {
+.ahvpo-loading-text {
     margin: 0;
     font-size: 14px;
     line-height: 1.4;
     max-width: 280px;
 }
 
-.vsp-load-error {
+.ahvpo-load-error {
     position: absolute;
     inset: 0;
     z-index: 35;
@@ -81,18 +81,18 @@
     text-align: center;
 }
 
-.vsp-load-error[hidden] {
+.ahvpo-load-error[hidden] {
     display: none !important;
 }
 
-.vsp-load-error-text {
+.ahvpo-load-error-text {
     margin: 0;
     font-size: 14px;
     line-height: 1.5;
     color: #ffb4b4;
 }
 
-.vsp-asset-warn {
+.ahvpo-asset-warn {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -107,39 +107,39 @@
     text-align: center;
 }
 
-.vsp-asset-warn[hidden] {
+.ahvpo-asset-warn[hidden] {
     display: none !important;
 }
 
-.vsp-wrapper.is-loading .vsp-overlay-play,
-.vsp-wrapper.is-loading .vsp-controls {
+.ahvpo-wrapper.is-loading .ahvpo-overlay-play,
+.ahvpo-wrapper.is-loading .ahvpo-controls {
     pointer-events: none;
     opacity: .45;
 }
 
-.vsp-wrapper.is-load-error .vsp-overlay-play,
-.vsp-wrapper.is-load-error .vsp-controls {
+.ahvpo-wrapper.is-load-error .ahvpo-overlay-play,
+.ahvpo-wrapper.is-load-error .ahvpo-controls {
     pointer-events: none;
     opacity: .35;
 }
 
-.vsp-wrapper.is-signs-error .vsp-btn-signs {
+.ahvpo-wrapper.is-signs-error .ahvpo-btn-signs {
     opacity: .55;
     cursor: not-allowed;
 }
 
-.vsp-wrapper.is-playing .vsp-stage {
+.ahvpo-wrapper.is-playing .ahvpo-stage {
     cursor: pointer;
 }
 
-.vsp-main {
+.ahvpo-main {
     width: 100%;
     height: 100%;
     display: block;
     object-fit: contain;
 }
 
-.vsp-main-host {
+.ahvpo-main-host {
     position: absolute;
     inset: 0;
     z-index: 1;
@@ -147,7 +147,7 @@
     height: 100%;
 }
 
-.vsp-vimeo-embed {
+.ahvpo-vimeo-embed {
     width: 100%;
     height: 100%;
     border: 0;
@@ -155,45 +155,45 @@
     background: #000;
 }
 
-.vsp-wrapper.is-vimeo-main .vsp-overlay-play,
-.vsp-wrapper.is-vimeo-main .vsp-subtitles,
-.vsp-wrapper.is-vimeo-main .vsp-controls,
-.vsp-wrapper.is-vimeo-main .vsp-signs-wrap,
-.vsp-wrapper.is-vimeo-main .vsp-loading,
-.vsp-wrapper.is-vimeo-main .vsp-load-error,
-.vsp-wrapper.is-vimeo-main .vsp-asset-warn {
+.ahvpo-wrapper.is-vimeo-main .ahvpo-overlay-play,
+.ahvpo-wrapper.is-vimeo-main .ahvpo-subtitles,
+.ahvpo-wrapper.is-vimeo-main .ahvpo-controls,
+.ahvpo-wrapper.is-vimeo-main .ahvpo-signs-wrap,
+.ahvpo-wrapper.is-vimeo-main .ahvpo-loading,
+.ahvpo-wrapper.is-vimeo-main .ahvpo-load-error,
+.ahvpo-wrapper.is-vimeo-main .ahvpo-asset-warn {
     z-index: 5;
 }
 
-.vsp-wrapper.is-vimeo-main .vsp-controls {
+.ahvpo-wrapper.is-vimeo-main .ahvpo-controls {
     z-index: 8;
 }
 
-.vsp-wrapper.is-vimeo-main .vsp-signs-wrap {
+.ahvpo-wrapper.is-vimeo-main .ahvpo-signs-wrap {
     z-index: 6;
 }
 
-.vsp-wrapper.is-vimeo-main .vsp-overlay-play {
+.ahvpo-wrapper.is-vimeo-main .ahvpo-overlay-play {
     z-index: 5;
     pointer-events: auto;
 }
 
-.vsp-wrapper.is-vimeo-main .vsp-overlay-play .vsp-big-play {
+.ahvpo-wrapper.is-vimeo-main .ahvpo-overlay-play .ahvpo-big-play {
     pointer-events: auto;
 }
 
-.vsp-wrapper.is-vimeo-main .vsp-signs-wrap.is-dragging,
-.vsp-wrapper.is-vimeo-main .vsp-signs-wrap.is-resizing {
+.ahvpo-wrapper.is-vimeo-main .ahvpo-signs-wrap.is-dragging,
+.ahvpo-wrapper.is-vimeo-main .ahvpo-signs-wrap.is-resizing {
     z-index: 12;
 }
 
-.vsp-wrapper.is-vimeo-main .vsp-loading,
-.vsp-wrapper.is-vimeo-main .vsp-load-error {
+.ahvpo-wrapper.is-vimeo-main .ahvpo-loading,
+.ahvpo-wrapper.is-vimeo-main .ahvpo-load-error {
     z-index: 30;
 }
 
 /* ---- Recuadro de señas ---- */
-.vsp-signs-wrap {
+.ahvpo-signs-wrap {
     position: absolute;
     bottom: 110px;
     right: 16px;
@@ -206,27 +206,27 @@
     display: none;
     cursor: grab;
     user-select: none;
-    z-index: 6; /* por encima de .vsp-overlay-play (5) para arrastrar en pausa */
+    z-index: 6; /* por encima de .ahvpo-overlay-play (5) para arrastrar en pausa */
     touch-action: none;
     pointer-events: auto;
     box-sizing: border-box;
 }
 
-.vsp-signs-wrap.is-dragging,
-.vsp-signs-wrap.is-resizing {
+.ahvpo-signs-wrap.is-dragging,
+.ahvpo-signs-wrap.is-resizing {
     z-index: 12;
 }
 
-.vsp-signs-wrap.is-dragging {
+.ahvpo-signs-wrap.is-dragging {
     cursor: grabbing;
 }
 
-.vsp-signs-wrap.is-resizing {
+.ahvpo-signs-wrap.is-resizing {
     cursor: nwse-resize;
 }
 
-.vsp-signs,
-.vsp-signs-vimeo {
+.ahvpo-signs,
+.ahvpo-signs-vimeo {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -238,7 +238,7 @@
     background: #000;
 }
 
-.vsp-signs-hit {
+.ahvpo-signs-hit {
     position: absolute;
     inset: 0;
     z-index: 1;
@@ -246,11 +246,11 @@
     touch-action: none;
 }
 
-.vsp-signs-wrap.is-dragging .vsp-signs-hit {
+.ahvpo-signs-wrap.is-dragging .ahvpo-signs-hit {
     cursor: grabbing;
 }
 
-.vsp-signs-resize {
+.ahvpo-signs-resize {
     position: absolute;
     left: 0;
     top: 0;
@@ -268,13 +268,13 @@
     touch-action: none;
 }
 
-.vsp-signs-wrap:hover .vsp-signs-resize,
-.vsp-signs-wrap.is-resizing .vsp-signs-resize,
-.vsp-signs-wrap.is-dragging .vsp-signs-resize {
+.ahvpo-signs-wrap:hover .ahvpo-signs-resize,
+.ahvpo-signs-wrap.is-resizing .ahvpo-signs-resize,
+.ahvpo-signs-wrap.is-dragging .ahvpo-signs-resize {
     opacity: 1;
 }
 
-.vsp-signs-dragbar {
+.ahvpo-signs-dragbar {
     position: absolute;
     left: 0;
     right: 0;
@@ -297,19 +297,19 @@
     touch-action: none;
 }
 
-.vsp-signs-wrap:hover .vsp-signs-dragbar,
-.vsp-signs-wrap.is-dragging .vsp-signs-dragbar,
-.vsp-signs-wrap.is-resizing .vsp-signs-dragbar {
+.ahvpo-signs-wrap:hover .ahvpo-signs-dragbar,
+.ahvpo-signs-wrap.is-dragging .ahvpo-signs-dragbar,
+.ahvpo-signs-wrap.is-resizing .ahvpo-signs-dragbar {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
 }
 
-.vsp-signs-wrap.is-dragging .vsp-signs-dragbar {
+.ahvpo-signs-wrap.is-dragging .ahvpo-signs-dragbar {
     cursor: grabbing;
 }
 
-.vsp-signs-dragbar-grip {
+.ahvpo-signs-dragbar-grip {
     width: 12px;
     height: 14px;
     flex-shrink: 0;
@@ -323,7 +323,7 @@
     opacity: .9;
 }
 
-.vsp-signs-dragbar-label {
+.ahvpo-signs-dragbar-label {
     font-size: 10px;
     font-weight: 600;
     letter-spacing: .02em;
@@ -332,7 +332,7 @@
 }
 
 /* ---- Overlay play central ---- */
-.vsp-overlay-play {
+.ahvpo-overlay-play {
     position: absolute;
     inset: 0;
     display: flex;
@@ -343,7 +343,7 @@
     pointer-events: auto;
 }
 
-.vsp-big-play {
+.ahvpo-big-play {
     width: 64px;
     height: 64px;
     background: rgba(255,255,255,.15);
@@ -355,12 +355,12 @@
     pointer-events: auto;
 }
 
-.vsp-overlay-play:hover .vsp-big-play {
+.ahvpo-overlay-play:hover .ahvpo-big-play {
     background: rgba(255,255,255,.25);
 }
 
 /* ---- Subtítulos (sobre la barra de controles) ---- */
-.vsp-subtitles {
+.ahvpo-subtitles {
     position: absolute;
     left: 50%;
     bottom: 82px; /* un poco más abajo para no solapar el PiP */
@@ -380,12 +380,12 @@
     box-sizing: border-box;
 }
 
-.vsp-subtitles.is-visible {
+.ahvpo-subtitles.is-visible {
     opacity: 1;
     visibility: visible;
 }
 
-.vsp-subtitles-text {
+.ahvpo-subtitles-text {
     margin: 0;
     font-size: 14px;
     line-height: 1.45;
@@ -396,7 +396,7 @@
 }
 
 /* ---- Barra de controles ---- */
-.vsp-controls {
+.ahvpo-controls {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -416,21 +416,21 @@
 }
 
 /* Ocultar controles al reproducir (clase aplicada por JS) */
-.vsp-wrapper .vsp-controls.vsp-controls--hidden {
+.ahvpo-wrapper .ahvpo-controls.ahvpo-controls--hidden {
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
 }
 
-.vsp-wrapper.is-controls-visible .vsp-controls.vsp-controls--hidden,
-.vsp-wrapper.is-playing:hover .vsp-controls.vsp-controls--hidden {
+.ahvpo-wrapper.is-controls-visible .ahvpo-controls.ahvpo-controls--hidden,
+.ahvpo-wrapper.is-playing:hover .ahvpo-controls.ahvpo-controls--hidden {
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
 }
 
 /* Fila de progreso */
-.vsp-progress-row {
+.ahvpo-progress-row {
     display: flex !important;
     align-items: center !important;
     gap: 8px;
@@ -440,17 +440,17 @@
     float: none !important;
 }
 
-.vsp-time-cur,
-.vsp-time-dur {
+.ahvpo-time-cur,
+.ahvpo-time-dur {
     font-size: 12px;
     color: #fff;
     min-width: 36px;
     font-variant-numeric: tabular-nums;
 }
 
-.vsp-time-dur { text-align: right; }
+.ahvpo-time-dur { text-align: right; }
 
-.vsp-progress-bg {
+.ahvpo-progress-bg {
     flex: 1;
     height: 4px;
     background: rgba(255,255,255,.25);
@@ -459,9 +459,9 @@
     position: relative;
 }
 
-.vsp-progress-bg:hover { height: 6px; }
+.ahvpo-progress-bg:hover { height: 6px; }
 
-.vsp-progress-fill {
+.ahvpo-progress-fill {
     height: 100%;
     background: #fff;
     border-radius: 2px;
@@ -471,7 +471,7 @@
 }
 
 /* Fila de botones */
-.vsp-btn-row {
+.ahvpo-btn-row {
     display: flex !important;
     align-items: center !important;
     gap: 7px;
@@ -483,12 +483,12 @@
     float: none !important;
 }
 
-.vsp-spacer { flex: 1; min-width: 4px; }
+.ahvpo-spacer { flex: 1; min-width: 4px; }
 
 /* Botones genéricos */
-.vsp-btn-play,
-.vsp-btn-mute,
-.vsp-btn-fs {
+.ahvpo-btn-play,
+.ahvpo-btn-mute,
+.ahvpo-btn-fs {
     -webkit-appearance: none;
     appearance: none;
     background: none;
@@ -508,33 +508,33 @@
     vertical-align: middle;
 }
 
-.vsp-btn-play:hover,
-.vsp-btn-mute:hover,
-.vsp-btn-fs:hover { opacity: 1; }
+.ahvpo-btn-play:hover,
+.ahvpo-btn-mute:hover,
+.ahvpo-btn-fs:hover { opacity: 1; }
 
 /* Estado play/pause */
-.vsp-icon-pause,
-.vsp-icon-muted,
-.vsp-icon-compress { display: none; }
+.ahvpo-icon-pause,
+.ahvpo-icon-muted,
+.ahvpo-icon-compress { display: none; }
 
-.vsp-wrapper.is-playing .vsp-icon-play  { display: none; }
-.vsp-wrapper.is-playing .vsp-icon-pause { display: block; }
+.ahvpo-wrapper.is-playing .ahvpo-icon-play  { display: none; }
+.ahvpo-wrapper.is-playing .ahvpo-icon-pause { display: block; }
 /* Capa transparente para play/pause; el botón grande se oculta al reproducir.
-   El PiP (.vsp-signs-wrap) queda por encima (z-index 6) y sigue siendo arrastrable. */
-.vsp-wrapper.is-playing .vsp-overlay-play .vsp-big-play {
+   El PiP (.ahvpo-signs-wrap) queda por encima (z-index 6) y sigue siendo arrastrable. */
+.ahvpo-wrapper.is-playing .ahvpo-overlay-play .ahvpo-big-play {
     opacity: 0;
     pointer-events: none;
     visibility: hidden;
 }
 
-.vsp-wrapper.is-muted .vsp-icon-vol    { display: none; }
-.vsp-wrapper.is-muted .vsp-icon-muted  { display: block; }
+.ahvpo-wrapper.is-muted .ahvpo-icon-vol    { display: none; }
+.ahvpo-wrapper.is-muted .ahvpo-icon-muted  { display: block; }
 
-.vsp-wrapper.is-fullscreen .vsp-icon-expand   { display: none; }
-.vsp-wrapper.is-fullscreen .vsp-icon-compress { display: block; }
+.ahvpo-wrapper.is-fullscreen .ahvpo-icon-expand   { display: none; }
+.ahvpo-wrapper.is-fullscreen .ahvpo-icon-compress { display: block; }
 
 /* Volumen */
-.vsp-vol-group {
+.ahvpo-vol-group {
     display: inline-flex !important;
     flex-direction: row !important;
     align-items: center !important;
@@ -552,7 +552,7 @@
     vertical-align: middle !important;
 }
 
-.vsp-vol-slot {
+.ahvpo-vol-slot {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -567,8 +567,8 @@
     vertical-align: middle !important;
 }
 
-.vsp-wrapper .vsp-controls .vsp-vol-slot .vsp-vol,
-.vsp-wrapper .vsp-controls input.vsp-vol[type="range"] {
+.ahvpo-wrapper .ahvpo-controls .ahvpo-vol-slot .ahvpo-vol,
+.ahvpo-wrapper .ahvpo-controls input.ahvpo-vol[type="range"] {
     -webkit-appearance: none !important;
     appearance: none !important;
     display: block !important;
@@ -601,7 +601,7 @@
     align-self: center !important;
 }
 
-.vsp-wrapper .vsp-controls input.vsp-vol[type="range"]::-webkit-slider-runnable-track {
+.ahvpo-wrapper .ahvpo-controls input.ahvpo-vol[type="range"]::-webkit-slider-runnable-track {
     -webkit-appearance: none !important;
     height: 4px !important;
     border-radius: 2px !important;
@@ -609,7 +609,7 @@
     border: none !important;
 }
 
-.vsp-wrapper .vsp-controls input.vsp-vol[type="range"]::-webkit-slider-thumb {
+.ahvpo-wrapper .ahvpo-controls input.ahvpo-vol[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none !important;
     appearance: none !important;
     width: 12px !important;
@@ -623,14 +623,14 @@
     transform: none !important;
 }
 
-.vsp-wrapper .vsp-controls input.vsp-vol[type="range"]::-moz-range-track {
+.ahvpo-wrapper .ahvpo-controls input.ahvpo-vol[type="range"]::-moz-range-track {
     height: 4px !important;
     border-radius: 2px !important;
     background: rgba(255, 255, 255, .35) !important;
     border: none !important;
 }
 
-.vsp-wrapper .vsp-controls input.vsp-vol[type="range"]::-moz-range-thumb {
+.ahvpo-wrapper .ahvpo-controls input.ahvpo-vol[type="range"]::-moz-range-thumb {
     width: 12px !important;
     height: 12px !important;
     border-radius: 50% !important;
@@ -641,12 +641,12 @@
     transform: none !important;
 }
 
-.vsp-wrapper .vsp-controls input.vsp-vol[type="range"]::-moz-focus-outer {
+.ahvpo-wrapper .ahvpo-controls input.ahvpo-vol[type="range"]::-moz-focus-outer {
     border: 0 !important;
 }
 
 /* Botón de subtítulos */
-.vsp-btn-subtitles {
+.ahvpo-btn-subtitles {
     display: flex;
     align-items: center;
     gap: 4px;
@@ -661,20 +661,20 @@
     line-height: 1.2;
 }
 
-.vsp-btn-subtitles:hover,
-.vsp-btn-subtitles:focus,
-.vsp-btn-subtitles:active,
-.vsp-btn-subtitles:focus-visible {
+.ahvpo-btn-subtitles:hover,
+.ahvpo-btn-subtitles:focus,
+.ahvpo-btn-subtitles:active,
+.ahvpo-btn-subtitles:focus-visible {
     background: rgba(255,255,255,.2);
     color: #fff !important;
 }
 
-.vsp-btn-subtitles[aria-pressed="true"] {
+.ahvpo-btn-subtitles[aria-pressed="true"] {
     background: rgba(255,255,255,.28);
     border-color: rgba(255,255,255,.7);
 }
 
-.vsp-wrapper .vsp-btn-subtitles {
+.ahvpo-wrapper .ahvpo-btn-subtitles {
     font-size: 12px !important;
     line-height: 1.2 !important;
     padding: 5px 11px !important;
@@ -686,12 +686,12 @@
     flex: 0 0 auto;
 }
 
-.vsp-subtitles-label {
+.ahvpo-subtitles-label {
     white-space: nowrap;
 }
 
 /* Botón de señas */
-.vsp-btn-signs {
+.ahvpo-btn-signs {
     display: flex;
     align-items: center;
     gap: 4px;
@@ -711,26 +711,26 @@
     min-height: 30px;
 }
 
-.vsp-btn-signs:hover {
+.ahvpo-btn-signs:hover {
     background: rgba(255,255,255,.2);
     color: #fff !important;
 }
 
-.vsp-btn-signs:focus,
-.vsp-btn-signs:active,
-.vsp-btn-signs:focus-visible {
+.ahvpo-btn-signs:focus,
+.ahvpo-btn-signs:active,
+.ahvpo-btn-signs:focus-visible {
     color: #fff !important;
 }
 
-.vsp-btn-signs[aria-pressed="true"] {
+.ahvpo-btn-signs[aria-pressed="true"] {
     background: rgba(255,255,255,.28);
     border-color: rgba(255,255,255,.7);
     color: #fff !important;
 }
 
-.vsp-btn-play svg,
-.vsp-btn-mute svg,
-.vsp-btn-fs svg {
+.ahvpo-btn-play svg,
+.ahvpo-btn-mute svg,
+.ahvpo-btn-fs svg {
     width: 18px !important;
     height: 18px !important;
     min-width: 18px !important;
@@ -745,34 +745,34 @@
 }
 
 /* Estado base y visibilidad por estado */
-.vsp-wrapper .vsp-btn-play .vsp-icon-play,
-.vsp-wrapper .vsp-btn-play .vsp-icon-pause,
-.vsp-wrapper .vsp-btn-mute .vsp-icon-vol,
-.vsp-wrapper .vsp-btn-mute .vsp-icon-muted,
-.vsp-wrapper .vsp-btn-fs .vsp-icon-expand,
-.vsp-wrapper .vsp-btn-fs .vsp-icon-compress {
+.ahvpo-wrapper .ahvpo-btn-play .ahvpo-icon-play,
+.ahvpo-wrapper .ahvpo-btn-play .ahvpo-icon-pause,
+.ahvpo-wrapper .ahvpo-btn-mute .ahvpo-icon-vol,
+.ahvpo-wrapper .ahvpo-btn-mute .ahvpo-icon-muted,
+.ahvpo-wrapper .ahvpo-btn-fs .ahvpo-icon-expand,
+.ahvpo-wrapper .ahvpo-btn-fs .ahvpo-icon-compress {
     display: none !important;
 }
 
-.vsp-wrapper .vsp-btn-play .vsp-icon-play,
-.vsp-wrapper .vsp-btn-mute .vsp-icon-vol,
-.vsp-wrapper .vsp-btn-fs .vsp-icon-expand {
+.ahvpo-wrapper .ahvpo-btn-play .ahvpo-icon-play,
+.ahvpo-wrapper .ahvpo-btn-mute .ahvpo-icon-vol,
+.ahvpo-wrapper .ahvpo-btn-fs .ahvpo-icon-expand {
     display: block !important;
 }
 
-.vsp-wrapper.is-playing .vsp-btn-play .vsp-icon-play { display: none !important; }
-.vsp-wrapper.is-playing .vsp-btn-play .vsp-icon-pause { display: block !important; }
+.ahvpo-wrapper.is-playing .ahvpo-btn-play .ahvpo-icon-play { display: none !important; }
+.ahvpo-wrapper.is-playing .ahvpo-btn-play .ahvpo-icon-pause { display: block !important; }
 
-.vsp-wrapper.is-muted .vsp-btn-mute .vsp-icon-vol { display: none !important; }
-.vsp-wrapper.is-muted .vsp-btn-mute .vsp-icon-muted { display: block !important; }
+.ahvpo-wrapper.is-muted .ahvpo-btn-mute .ahvpo-icon-vol { display: none !important; }
+.ahvpo-wrapper.is-muted .ahvpo-btn-mute .ahvpo-icon-muted { display: block !important; }
 
-.vsp-wrapper.is-fullscreen .vsp-btn-fs .vsp-icon-expand { display: none !important; }
-.vsp-wrapper.is-fullscreen .vsp-btn-fs .vsp-icon-compress { display: block !important; }
+.ahvpo-wrapper.is-fullscreen .ahvpo-btn-fs .ahvpo-icon-expand { display: none !important; }
+.ahvpo-wrapper.is-fullscreen .ahvpo-btn-fs .ahvpo-icon-compress { display: block !important; }
 
 /* Blindaje contra estilos globales de tema/page builders */
-.vsp-wrapper .vsp-btn-play,
-.vsp-wrapper .vsp-btn-mute,
-.vsp-wrapper .vsp-btn-fs {
+.ahvpo-wrapper .ahvpo-btn-play,
+.ahvpo-wrapper .ahvpo-btn-mute,
+.ahvpo-wrapper .ahvpo-btn-fs {
     width: 24px !important;
     height: 24px !important;
     min-width: 24px !important;
@@ -780,7 +780,7 @@
     padding: 2px !important;
 }
 
-.vsp-wrapper .vsp-btn-signs {
+.ahvpo-wrapper .ahvpo-btn-signs {
     font-size: 12px !important;
     line-height: 1.2 !important;
     padding: 5px 11px !important;
@@ -792,30 +792,30 @@
     flex: 0 0 auto !important;
 }
 
-.vsp-signs-label {
+.ahvpo-signs-label {
     white-space: nowrap;
 }
 
 /* ---- Responsivo ---- */
 @media (max-width: 480px) {
-    .vsp-signs-wrap {
+    .ahvpo-signs-wrap {
         width: 130px;
         height: 85px;
         bottom: 100px;
         right: 8px;
     }
 
-    .vsp-signs-dragbar-label { display: none; }
+    .ahvpo-signs-dragbar-label { display: none; }
 
-    .vsp-subtitles {
+    .ahvpo-subtitles {
         bottom: 78px;
         max-width: min(60%, calc(100% - 16px));
         padding: 6px 10px;
     }
 
-    .vsp-subtitles-text { font-size: 12px; }
+    .ahvpo-subtitles-text { font-size: 12px; }
 
-    .vsp-subtitles-label { display: none; }
+    .ahvpo-subtitles-label { display: none; }
 
-    .vsp-vol { width: 50px; }
+    .ahvpo-vol { width: 50px; }
 }

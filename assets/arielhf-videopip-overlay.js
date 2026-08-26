@@ -295,7 +295,7 @@
 
         function buildMain() {
             if (mainType === 'vimeo' && wrap.getAttribute('data-vimeo-id')) {
-                var iframe = wrap.querySelector('.vsp-main-vimeo');
+                var iframe = wrap.querySelector('.ahvpo-main-vimeo');
                 if (!iframe) return Promise.reject(new Error('vimeo main'));
                 return new Promise(function (resolve, reject) {
                     whenVimeoReady(function () {
@@ -307,7 +307,7 @@
                     });
                 });
             }
-            var video = wrap.querySelector('video.vsp-main');
+            var video = wrap.querySelector('video.ahvpo-main');
             if (!video) return Promise.reject(new Error('main video'));
             return Promise.resolve(createHtml5Media(video));
         }
@@ -317,7 +317,7 @@
                 return Promise.resolve(null);
             }
             if (senasType === 'vimeo' && wrap.getAttribute('data-senas-vimeo-id')) {
-                var sIframe = wrap.querySelector('.vsp-signs-vimeo');
+                var sIframe = wrap.querySelector('.ahvpo-signs-vimeo');
                 if (!sIframe) return Promise.resolve(null);
                 return new Promise(function (resolve) {
                     whenVimeoReady(function () {
@@ -325,7 +325,7 @@
                     });
                 });
             }
-            var sVideo = wrap.querySelector('video.vsp-signs');
+            var sVideo = wrap.querySelector('video.ahvpo-signs');
             return Promise.resolve(sVideo ? createHtml5Media(sVideo) : null);
         }
 
@@ -334,7 +334,7 @@
             .catch(function (err) { cb(err, null, null); });
     }
 
-    function vspI18n(key, fallback) {
+    function ahvpoI18n(key, fallback) {
         var cfg = window.ahvpoConfig || {};
         return (cfg.i18n && cfg.i18n[key]) ? cfg.i18n[key] : fallback;
     }
@@ -342,12 +342,12 @@
     function initPlayer(wrap) {
         bootstrapMedia(wrap, function (err, mainMedia, signsMedia) {
             if (err || !mainMedia) {
-                var loadErrorEl = wrap.querySelector('.vsp-load-error');
-                var loadErrorText = wrap.querySelector('.vsp-load-error-text');
+                var loadErrorEl = wrap.querySelector('.ahvpo-load-error');
+                var loadErrorText = wrap.querySelector('.ahvpo-load-error-text');
                 wrap.classList.add('is-load-error');
                 if (loadErrorEl) loadErrorEl.hidden = false;
                 if (loadErrorText) {
-                    loadErrorText.textContent = vspI18n('initError', 'Could not initialize the player. Check the main video URLs.');
+                    loadErrorText.textContent = ahvpoI18n('initError', 'Could not initialize the player. Check the main video URLs.');
                 }
                 return;
             }
@@ -356,23 +356,23 @@
     }
 
     function runPlayerInit(wrap, vMain, vSigns) {
-        var signsWrap = wrap.querySelector('.vsp-signs-wrap');
-        var btnPlay   = wrap.querySelector('.vsp-btn-play');
-        var btnMute   = wrap.querySelector('.vsp-btn-mute');
-        var btnSigns  = wrap.querySelector('.vsp-btn-signs');
-        var signsLbl  = wrap.querySelector('.vsp-signs-label');
-        var progBg    = wrap.querySelector('.vsp-progress-bg');
-        var progFill  = wrap.querySelector('.vsp-progress-fill');
-        var timeCur   = wrap.querySelector('.vsp-time-cur');
-        var timeDur   = wrap.querySelector('.vsp-time-dur');
-        var volRange  = wrap.querySelector('.vsp-vol');
-        var overlay   = wrap.querySelector('.vsp-overlay-play');
-        var stage     = wrap.querySelector('.vsp-stage');
-        var btnFs     = wrap.querySelector('.vsp-btn-fs');
-        var subsBox   = wrap.querySelector('.vsp-subtitles');
-        var subsText  = wrap.querySelector('.vsp-subtitles-text');
-        var btnSubs   = wrap.querySelector('.vsp-btn-subtitles');
-        var subsLbl   = wrap.querySelector('.vsp-subtitles-label');
+        var signsWrap = wrap.querySelector('.ahvpo-signs-wrap');
+        var btnPlay   = wrap.querySelector('.ahvpo-btn-play');
+        var btnMute   = wrap.querySelector('.ahvpo-btn-mute');
+        var btnSigns  = wrap.querySelector('.ahvpo-btn-signs');
+        var signsLbl  = wrap.querySelector('.ahvpo-signs-label');
+        var progBg    = wrap.querySelector('.ahvpo-progress-bg');
+        var progFill  = wrap.querySelector('.ahvpo-progress-fill');
+        var timeCur   = wrap.querySelector('.ahvpo-time-cur');
+        var timeDur   = wrap.querySelector('.ahvpo-time-dur');
+        var volRange  = wrap.querySelector('.ahvpo-vol');
+        var overlay   = wrap.querySelector('.ahvpo-overlay-play');
+        var stage     = wrap.querySelector('.ahvpo-stage');
+        var btnFs     = wrap.querySelector('.ahvpo-btn-fs');
+        var subsBox   = wrap.querySelector('.ahvpo-subtitles');
+        var subsText  = wrap.querySelector('.ahvpo-subtitles-text');
+        var btnSubs   = wrap.querySelector('.ahvpo-btn-subtitles');
+        var subsLbl   = wrap.querySelector('.ahvpo-subtitles-label');
 
         if (!progBg || !progFill || !timeCur || !timeDur || !stage) return;
 
@@ -384,11 +384,11 @@
         var subsOn  = !!(btnSubs && subsBox && subsText);
         var subsCues = [];
 
-        var loadingEl     = wrap.querySelector('.vsp-loading');
-        var loadingText   = wrap.querySelector('.vsp-loading-text');
-        var loadErrorEl   = wrap.querySelector('.vsp-load-error');
-        var loadErrorText = wrap.querySelector('.vsp-load-error-text');
-        var assetWarnEl   = wrap.querySelector('.vsp-asset-warn');
+        var loadingEl     = wrap.querySelector('.ahvpo-loading');
+        var loadingText   = wrap.querySelector('.ahvpo-loading-text');
+        var loadErrorEl   = wrap.querySelector('.ahvpo-load-error');
+        var loadErrorText = wrap.querySelector('.ahvpo-load-error-text');
+        var assetWarnEl   = wrap.querySelector('.ahvpo-asset-warn');
 
         var LOAD_TIMEOUT_MS      = 45000;
         var SIGNS_TIMEOUT_MS     = 30000;
@@ -417,16 +417,16 @@
             if (!loadingText) return;
             if (loadState.main === 'pending') {
                 loadingText.textContent = vMain.type === 'vimeo'
-                    ? vspI18n('loadingVimeo', 'Connecting to Vimeo…')
-                    : vspI18n('loadingMain', 'Loading main video…');
+                    ? ahvpoI18n('loadingVimeo', 'Connecting to Vimeo…')
+                    : ahvpoI18n('loadingMain', 'Loading main video…');
             } else if (loadState.signs === 'pending') {
                 loadingText.textContent = vSigns && vSigns.type === 'vimeo'
-                    ? vspI18n('loadingSignsVimeo', 'Connecting sign language (Vimeo)…')
-                    : vspI18n('loadingSigns', 'Loading sign language video…');
+                    ? ahvpoI18n('loadingSignsVimeo', 'Connecting sign language (Vimeo)…')
+                    : ahvpoI18n('loadingSigns', 'Loading sign language video…');
             } else if (loadState.subs === 'pending') {
-                loadingText.textContent = vspI18n('loadingSubs', 'Loading subtitles…');
+                loadingText.textContent = ahvpoI18n('loadingSubs', 'Loading subtitles…');
             } else {
-                loadingText.textContent = vspI18n('preparing', 'Preparing player…');
+                loadingText.textContent = ahvpoI18n('preparing', 'Preparing player…');
             }
         }
 
@@ -434,7 +434,7 @@
             if (!vSigns || !vMain.duration || !vSigns.duration) return;
             if (Math.abs(vMain.duration - vSigns.duration) > DURATION_TOLERANCE) {
                 wrap.classList.add('is-duration-mismatch');
-                showAssetWarn(vspI18n('durationMismatch', 'Main and sign language videos have different durations; drift may occur near the end.'));
+                showAssetWarn(ahvpoI18n('durationMismatch', 'Main and sign language videos have different durations; drift may occur near the end.'));
             }
         }
 
@@ -452,10 +452,10 @@
                 wrap.classList.remove('is-subs-on');
                 if (btnSubs) {
                     btnSubs.setAttribute('aria-pressed', 'false');
-                    btnSubs.setAttribute('aria-label', vspI18n('subsUnavailable', 'Subtitles unavailable'));
+                    btnSubs.setAttribute('aria-label', ahvpoI18n('subsUnavailable', 'Subtitles unavailable'));
                 }
-                if (subsLbl) subsLbl.textContent = vspI18n('subsUnavailable', 'Subtitles unavailable');
-                showAssetWarn(vspI18n('subsLoadError', 'Could not load subtitles.'));
+                if (subsLbl) subsLbl.textContent = ahvpoI18n('subsUnavailable', 'Subtitles unavailable');
+                showAssetWarn(ahvpoI18n('subsLoadError', 'Could not load subtitles.'));
             }
         }
 
@@ -501,7 +501,7 @@
                 btnSigns.disabled = true;
                 btnSigns.setAttribute('aria-disabled', 'true');
             }
-            showAssetWarn(reason || vspI18n('signsDegraded', 'Could not load the sign language video. The main video remains available.'));
+            showAssetWarn(reason || ahvpoI18n('signsDegraded', 'Could not load the sign language video. The main video remains available.'));
             updateLoadUi();
         }
 
@@ -522,14 +522,14 @@
             function markError() {
                 if (loadState[asset] === 'error' || loadState[asset] === 'ready') return;
                 if (asset === 'signs') {
-                    degradeSigns(timedOut ? vspI18n('signsTimeout', 'The sign language video took too long to load.') : vspI18n('signsLoadError', 'Could not load the sign language video.'));
+                    degradeSigns(timedOut ? ahvpoI18n('signsTimeout', 'The sign language video took too long to load.') : ahvpoI18n('signsLoadError', 'Could not load the sign language video.'));
                     return;
                 }
                 setAssetState('main', 'error');
                 showLoadError(
                     vMain.type === 'vimeo'
-                        ? vspI18n('mainVimeoError', 'Could not load the Vimeo video. Check the link and privacy settings.')
-                        : vspI18n('mainFileError', 'Could not load the main video. Check the URL or your connection.')
+                        ? ahvpoI18n('mainVimeoError', 'Could not load the Vimeo video. Check the link and privacy settings.')
+                        : ahvpoI18n('mainFileError', 'Could not load the main video. Check the URL or your connection.')
                 );
             }
 
@@ -590,7 +590,7 @@
         /* ---------- Play / Pause ---------- */
         function setPlaying(playing) {
             wrap.classList.toggle('is-playing', playing);
-            if (btnPlay) btnPlay.setAttribute('aria-label', playing ? vspI18n('pause', 'Pause') : vspI18n('play', 'Play'));
+            if (btnPlay) btnPlay.setAttribute('aria-label', playing ? ahvpoI18n('pause', 'Pause') : ahvpoI18n('play', 'Play'));
         }
 
         function togglePlay() {
@@ -627,7 +627,7 @@
 
         function isUiTarget(target) {
             if (!target || !target.closest) return false;
-            return !!target.closest('.vsp-controls, .vsp-signs-wrap, .vsp-overlay-play, .vsp-btn-signs, .vsp-subtitles, .vsp-btn-subtitles');
+            return !!target.closest('.ahvpo-controls, .ahvpo-signs-wrap, .ahvpo-overlay-play, .ahvpo-btn-signs, .ahvpo-subtitles, .ahvpo-btn-subtitles');
         }
 
         function onStageClick(e) {
@@ -651,7 +651,7 @@
             });
         }
 
-        var controlsEl = wrap.querySelector('.vsp-controls');
+        var controlsEl = wrap.querySelector('.ahvpo-controls');
         var controlsHideTimer = null;
 
         function isMainPlaying() {
@@ -661,8 +661,8 @@
         function syncControlsUi() {
             if (!controlsEl) return;
             var hidden = isMainPlaying() && !wrap.classList.contains('is-controls-visible');
-            controlsEl.classList.toggle('vsp-controls--hidden', hidden);
-            wrap.classList.toggle('vsp-controls-hidden', hidden);
+            controlsEl.classList.toggle('ahvpo-controls--hidden', hidden);
+            wrap.classList.toggle('ahvpo-controls-hidden', hidden);
         }
 
         function showControlsUi() {
@@ -797,7 +797,7 @@
             bindControlClick(btnMute, function () {
                 vMain.muted = !vMain.muted;
                 wrap.classList.toggle('is-muted', vMain.muted);
-                btnMute.setAttribute('aria-label', vMain.muted ? vspI18n('unmute', 'Unmute') : vspI18n('mute', 'Mute'));
+                btnMute.setAttribute('aria-label', vMain.muted ? ahvpoI18n('unmute', 'Unmute') : ahvpoI18n('mute', 'Mute'));
             });
         }
 
@@ -805,9 +805,9 @@
         if (btnSubs && subsBox && subsText) {
             function applySubsState() {
                 wrap.classList.toggle('is-subs-on', subsOn);
-                if (subsLbl) subsLbl.textContent = subsOn ? vspI18n('subsOn', 'Desactivar subtítulos') : vspI18n('subsOff', 'Activar subtítulos');
+                if (subsLbl) subsLbl.textContent = subsOn ? ahvpoI18n('subsOn', 'Disable subtitles') : ahvpoI18n('subsOff', 'Enable subtitles');
                 btnSubs.setAttribute('aria-pressed', String(subsOn));
-                btnSubs.setAttribute('aria-label', subsOn ? vspI18n('subsOn', 'Desactivar subtítulos') : vspI18n('subsOff', 'Activar subtítulos'));
+                btnSubs.setAttribute('aria-label', subsOn ? ahvpoI18n('subsOn', 'Disable subtitles') : ahvpoI18n('subsOff', 'Enable subtitles'));
                 updateSubtitlesDisplay();
             }
 
@@ -880,9 +880,9 @@
 
                 signsWrap.style.display = signsOn ? 'block' : 'none';
                 signsWrap.setAttribute('aria-hidden', signsOn ? 'false' : 'true');
-                if (signsLbl) signsLbl.textContent = signsOn ? vspI18n('signsOn', 'Desactivar lengua de señas') : vspI18n('signsOff', 'Activar lengua de señas');
+                if (signsLbl) signsLbl.textContent = signsOn ? ahvpoI18n('signsOn', 'Disable sign language') : ahvpoI18n('signsOff', 'Enable sign language');
                 btnSigns.setAttribute('aria-pressed', String(signsOn));
-                btnSigns.setAttribute('aria-label', signsOn ? vspI18n('signsOn', 'Desactivar lengua de señas') : vspI18n('signsOff', 'Activar lengua de señas'));
+                btnSigns.setAttribute('aria-label', signsOn ? ahvpoI18n('signsOn', 'Disable sign language') : ahvpoI18n('signsOff', 'Enable sign language'));
 
                 if (signsOn && loadState.signs === 'ready') {
                     vSigns.currentTime = vMain.currentTime;
@@ -931,7 +931,7 @@
             // Posición “en casa” (modo normal). Al salir de fullscreen vuelve al default CSS.
             var signsHomeRatio = null;
             var signsHomeScale = 1;
-            var signsResizeBtn = signsWrap.querySelector('.vsp-signs-resize');
+            var signsResizeBtn = signsWrap.querySelector('.ahvpo-signs-resize');
 
             function isPlayerFullscreen() {
                 return !!(document.fullscreenElement || document.webkitFullscreenElement);
@@ -1159,7 +1159,7 @@
             function onSignsPointerDown(e) {
                 if (!signsOn || signsWrap.getAttribute('aria-hidden') === 'true') return;
                 if (e.button !== undefined && e.button !== 0) return;
-                if (e.target && e.target.closest && e.target.closest('.vsp-signs-resize')) return;
+                if (e.target && e.target.closest && e.target.closest('.ahvpo-signs-resize')) return;
                 startDrag(e.clientX, e.clientY);
                 e.preventDefault();
                 e.stopPropagation();
@@ -1183,7 +1183,7 @@
             signsWrap.addEventListener('mousedown', onSignsPointerDown);
             signsWrap.addEventListener('touchstart', function (e) {
                 if (!signsOn || signsWrap.getAttribute('aria-hidden') === 'true') return;
-                if (e.target && e.target.closest && e.target.closest('.vsp-signs-resize')) return;
+                if (e.target && e.target.closest && e.target.closest('.ahvpo-signs-resize')) return;
                 startDrag(e.touches[0].clientX, e.touches[0].clientY);
                 e.preventDefault();
                 e.stopPropagation();
@@ -1247,7 +1247,7 @@
                 var isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
                 onSignsFullscreenTransition(isFs, wasFs);
                 wrap.classList.toggle('is-fullscreen', isFs);
-                btnFs.setAttribute('aria-label', isFs ? vspI18n('exitFullscreen', 'Exit fullscreen') : vspI18n('fullscreen', 'Fullscreen'));
+                btnFs.setAttribute('aria-label', isFs ? ahvpoI18n('exitFullscreen', 'Exit fullscreen') : ahvpoI18n('fullscreen', 'Fullscreen'));
 
                 requestAnimationFrame(function () {
                     requestAnimationFrame(reflowSignsPosition);
@@ -1262,7 +1262,7 @@
     /* ---------- Inicializar reproductores (página, modales, contenido dinámico) ---------- */
     function initAll(root) {
         var scope = root && root.querySelectorAll ? root : document;
-        scope.querySelectorAll('.vsp-wrapper').forEach(function (wrap) {
+        scope.querySelectorAll('.ahvpo-wrapper').forEach(function (wrap) {
             if (wrap[INIT_FLAG]) return;
             wrap[INIT_FLAG] = true;
             initPlayer(wrap);
@@ -1271,7 +1271,7 @@
 
     function ensureInitFromTarget(target) {
         if (!target || !target.closest) return;
-        var wrap = target.closest('.vsp-wrapper');
+        var wrap = target.closest('.ahvpo-wrapper');
         if (!wrap || wrap[INIT_FLAG]) return;
         wrap[INIT_FLAG] = true;
         initPlayer(wrap);

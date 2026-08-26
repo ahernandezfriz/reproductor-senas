@@ -4,7 +4,7 @@ Tags: video, accessibility, subtitles, sign-language, picture-in-picture
 Requires at least: 5.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -92,6 +92,12 @@ Alias legado: `[video_senas]` sigue funcionando con los mismos parámetros.
 
 == Changelog ==
 
+= 1.2.4 =
+* Carga de traducciones (`load_plugin_textdomain`) y paquetes es_ES / es_CL.
+* Seguridad: rutas locales de subtítulos VTT validadas con realpath bajo uploads/wp-content.
+* i18n: cadenas fuente en inglés; la UI en español se carga según el idioma del sitio.
+* Prefijo unificado de clases CSS/HTML/JS: `ahvpo-` (antes `vsp-`).
+
 = 1.2.3 =
 * Subtítulos: barra más corta (máx. 60% del ancho) y un poco más abajo para no tapar el video secundario (PiP).
 
@@ -145,6 +151,9 @@ Alias legado: `[video_senas]` sigue funcionando con los mismos parámetros.
 * Lanzamiento inicial.
 
 == Upgrade Notice ==
+
+= 1.2.4 =
+Mejoras de i18n, seguridad en subtítulos VTT y prefijo CSS unificado (ahvpo-).
 
 = 1.2.3 =
 Ajusta el tamaño y posición de los subtítulos para que no se superpongan al video secundario.

@@ -1,0 +1,161 @@
+# Copyright (C) 2026 Ariel Hernández Friz
+# This file is distributed under the same license as the plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: arielhf-videopip-overlay 1.2.3\n"
+"Report-Msgid-Bugs-To: https://github.com/ahernandezfriz/reproductor-senas\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: arielhf-videopip-overlay\n"
+
+msgid "Picture-in-Picture Video Player"
+msgstr "Reproductor de Video Picture in Picture"
+
+msgid "PiP Player"
+msgstr "Reproductor PiP"
+
+msgid "Disable subtitles"
+msgstr "Desactivar subtítulos"
+
+msgid "Enable subtitles"
+msgstr "Activar subtítulos"
+
+msgid "Disable sign language"
+msgstr "Desactivar lengua de señas"
+
+msgid "Enable sign language"
+msgstr "Activar lengua de señas"
+
+msgid "Resize"
+msgstr "Cambiar tamaño"
+
+msgid "Drag to move"
+msgstr "Arrastrar para mover"
+
+msgid "Settings"
+msgstr "Ajustes"
+
+msgid "Play"
+msgstr "Reproducir"
+
+msgid "Pause"
+msgstr "Pausa"
+
+msgid "Mute"
+msgstr "Silenciar"
+
+msgid "Unmute"
+msgstr "Activar sonido"
+
+msgid "Fullscreen"
+msgstr "Pantalla completa"
+
+msgid "Exit fullscreen"
+msgstr "Salir de pantalla completa"
+
+msgid "Volume"
+msgstr "Volumen"
+
+msgid "Progress"
+msgstr "Progreso"
+
+msgid "Player controls"
+msgstr "Controles del reproductor"
+
+msgid "Play video"
+msgstr "Reproducir video"
+
+msgid "Main video"
+msgstr "Video principal"
+
+msgid "Sign language"
+msgstr "Lengua de señas"
+
+msgid "Loading player…"
+msgstr "Cargando reproductor…"
+
+msgid "Loading main video…"
+msgstr "Cargando video principal…"
+
+msgid "Connecting to Vimeo…"
+msgstr "Conectando con Vimeo…"
+
+msgid "Loading sign language video…"
+msgstr "Cargando video de lengua de señas…"
+
+msgid "Connecting sign language (Vimeo)…"
+msgstr "Conectando lengua de señas (Vimeo)…"
+
+msgid "Loading subtitles…"
+msgstr "Cargando subtítulos…"
+
+msgid "Preparing player…"
+msgstr "Preparando reproductor…"
+
+msgid "Subtitles unavailable"
+msgstr "Subtítulos no disponibles"
+
+msgid "Could not load subtitles."
+msgstr "No se pudieron cargar los subtítulos."
+
+msgid "Could not load the sign language video. The main video remains available."
+msgstr "No se pudo cargar el video de lengua de señas. El video principal sigue disponible."
+
+msgid "The sign language video took too long to load."
+msgstr "El video de lengua de señas tardó demasiado en cargar."
+
+msgid "Could not load the sign language video."
+msgstr "No se pudo cargar el video de lengua de señas."
+
+msgid "Could not load the Vimeo video. Check the link and privacy settings."
+msgstr "No se pudo cargar el video de Vimeo. Revisa el enlace y la privacidad."
+
+msgid "Could not load the main video. Check the URL or your connection."
+msgstr "No se pudo cargar el video principal. Revisa la URL o tu conexión."
+
+msgid "Could not initialize the player. Check the main video URLs."
+msgstr "No se pudo inicializar el reproductor. Revisa las URLs del video principal."
+
+msgid "Main and sign language videos have different durations; drift may occur near the end."
+msgstr "El video principal y el de lengua de señas tienen duraciones distintas; puede haber desfase al final."
+
+msgid "Empty subtitles URL."
+msgstr "URL de subtítulos vacía."
+
+msgid "Could not read the VTT file."
+msgstr "No se pudo leer el archivo VTT."
+
+msgid "Shortcode parameters"
+msgstr "Parámetros del shortcode"
+
+msgid "Parameter"
+msgstr "Parámetro"
+
+msgid "Required"
+msgstr "Obligatorio"
+
+msgid "Description"
+msgstr "Descripción"
+
+msgid "Yes"
+msgstr "Sí"
+
+msgid "No"
+msgstr "No"
+
+msgid "Example"
+msgstr "Ejemplo"
+
+msgid "Third-party services"
+msgstr "Servicios de terceros"
+
+msgid "Use the %s shortcode in any page or post."
+msgstr "Usa el shortcode %s en cualquier página o entrada."
+
+msgid "Missing required parameter %s with the video URL."
+msgstr "Falta el parámetro obligatorio %s con la URL del video."
+
+msgid "The %s parameter must be a valid Vimeo link or a direct video file URL on the web."
+msgstr "El parámetro %s debe ser un enlace de Vimeo válido o la URL directa de un archivo de video."

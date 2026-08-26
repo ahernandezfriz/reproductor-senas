@@ -21,6 +21,41 @@ function ahvpo_is_allowed_vtt_url( $url ) {
 }
 
 /**
+ * Return a readable file path only if it resolves under an allowed base directory.
+ *
+ * @param string $file     Candidate filesystem path.
+ * @param string $base_dir Allowed root directory.
+ * @return string Absolute safe path or empty string.
+ */
+function ahvpo_safe_path_under_dir( $file, $base_dir ) {
+	$file     = wp_normalize_path( (string) $file );
+	$base_dir = wp_normalize_path( (string) $base_dir );
+
+	if ( $file === '' || $base_dir === '' || strpos( $file, "\0" ) !== false ) {
+		return '';
+	}
+
+	$base_real = realpath( $base_dir );
+	if ( false === $base_real ) {
+		return '';
+	}
+	$base_real = wp_normalize_path( $base_real );
+
+	$file_real = realpath( $file );
+	if ( false === $file_real || ! is_file( $file_real ) || ! is_readable( $file_real ) ) {
+		return '';
+	}
+	$file_real = wp_normalize_path( $file_real );
+
+	$base_prefix = trailingslashit( $base_real );
+	if ( strpos( $file_real, $base_prefix ) !== 0 ) {
+		return '';
+	}
+
+	return $file_real;
+}
+
+/**
  * Resolve a same-site URL to a local path under wp-content.
  *
  * @param string $url VTT URL on this site.
@@ -34,10 +69,11 @@ function ahvpo_resolve_local_content_file( $url ) {
 
 	$upload = wp_upload_dir();
 	if ( ! empty( $upload['baseurl'] ) && ! empty( $upload['basedir'] ) && strpos( $url, $upload['baseurl'] ) === 0 ) {
-		$file = str_replace( $upload['baseurl'], $upload['basedir'], $url );
-		$file = urldecode( $file );
-		if ( file_exists( $file ) && is_readable( $file ) ) {
-			return $file;
+		$relative = substr( $url, strlen( $upload['baseurl'] ) );
+		$file     = $upload['basedir'] . urldecode( $relative );
+		$safe     = ahvpo_safe_path_under_dir( $file, $upload['basedir'] );
+		if ( $safe !== '' ) {
+			return $safe;
 		}
 	}
 
@@ -45,8 +81,9 @@ function ahvpo_resolve_local_content_file( $url ) {
 	if ( strpos( $url, $content_url ) === 0 ) {
 		$relative = substr( $url, strlen( $content_url ) );
 		$file     = WP_CONTENT_DIR . urldecode( $relative );
-		if ( file_exists( $file ) && is_readable( $file ) ) {
-			return $file;
+		$safe     = ahvpo_safe_path_under_dir( $file, WP_CONTENT_DIR );
+		if ( $safe !== '' ) {
+			return $safe;
 		}
 	}
 

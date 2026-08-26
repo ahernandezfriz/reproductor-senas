@@ -8,8 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function ahvpo_admin_menu() {
 	add_options_page(
-		__( 'Reproductor de Video Picture in Picture', 'arielhf-videopip-overlay' ),
-		__( 'Reproductor PiP', 'arielhf-videopip-overlay' ),
+		__( 'Picture-in-Picture Video Player', 'arielhf-videopip-overlay' ),
+		__( 'PiP Player', 'arielhf-videopip-overlay' ),
 		'manage_options',
 		'arielhf-videopip-overlay',
 		'ahvpo_admin_page'
@@ -26,7 +26,7 @@ function ahvpo_admin_page() {
 	}
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Reproductor de Video Picture in Picture', 'arielhf-videopip-overlay' ); ?></h1>
+		<h1><?php esc_html_e( 'Picture-in-Picture Video Player', 'arielhf-videopip-overlay' ); ?></h1>
 		<p>
 			<?php
 			echo wp_kses_post(
